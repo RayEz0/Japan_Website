@@ -9,28 +9,7 @@ import Expenses  from './pages/Expenses'
 import Savings   from './pages/Savings'
 import Stays     from './pages/Stays'
 import Gifts     from './pages/Gifts'
-
-// ── Placeholder (Phase 4+) ───────────────────────────────────────────────────
-function PageShell({ title, index }) {
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="text-center">
-        <p className="text-[9px] uppercase tracking-widest text-[#777] mb-3"
-           style={{ fontFamily: "'JetBrains Mono', monospace" }}>
-          {index}
-        </p>
-        <h1 className="text-5xl font-bold text-[#0C0C0C] tracking-tight"
-            style={{ fontFamily: "'Fraunces', serif" }}>
-          {title}
-        </h1>
-        <p className="text-[10px] text-[#BBBBBB] mt-4 uppercase tracking-widest"
-           style={{ fontFamily: "'JetBrains Mono', monospace" }}>
-          Coming soon
-        </p>
-      </div>
-    </div>
-  )
-}
+import Budget    from './pages/Budget'
 
 // ── Animated outlet — fades + slides pages on route change ───────────────────
 function AnimatedOutlet() {
@@ -88,7 +67,7 @@ export default function App() {
           <Route element={<AppLayout />}>
             <Route path="/"          element={<Dashboard />} />
             <Route path="/itinerary" element={<Itinerary />} />
-            <Route path="/budget"    element={<PageShell title="Budget"   index="003 — Finances"      />} />
+            <Route path="/budget"    element={<Budget />} />
             <Route path="/savings"   element={<Savings />} />
             <Route path="/expenses"  element={<Expenses />} />
             <Route path="/stays"     element={<Stays />} />
