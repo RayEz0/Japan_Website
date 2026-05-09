@@ -87,7 +87,7 @@ export default function Dashboard() {
               Departure In
             </p>
             <div
-              className="text-[118px] font-light text-[#0C0C0C] leading-none"
+              className="text-[118px] font-light text-[#0C0C0C] leading-none tabular-nums"
               style={{ fontFamily: "'Fraunces', serif", letterSpacing: '-5px' }}
             >
               {cd.d}
@@ -110,7 +110,7 @@ export default function Dashboard() {
                   <div>
                     <p className="text-[7px] uppercase tracking-[1px] text-[#777] mb-0.5"
                        style={{ fontFamily: "'JetBrains Mono', monospace" }}>{lbl}</p>
-                    <span className="text-[22px] text-[#0C0C0C]"
+                    <span className="text-[22px] text-[#0C0C0C] tabular-nums"
                           style={{ fontFamily: "'JetBrains Mono', monospace" }}>{val}</span>
                   </div>
                 </div>

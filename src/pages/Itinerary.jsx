@@ -3,8 +3,22 @@ import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../context/AuthContext'
 import { DAYS, toPlaceKey } from '../data/days'
 
+// ── Image focal-point map ─────────────────────────────────────────────────────
+const POSITION_MAP = {
+  'Sensoji Temple':          'center top',
+  'Shibuya Crossing':        'center center',
+  'Fushimi Inari Taisha':    'center top',
+  'Lake Kawaguchi':          'center center',
+  'Oishi Park':              'center bottom',
+  'Dotonbori Canal':         'center center',
+  'Gion Walk':               'center top',
+  'Meiji Shrine':            'center top',
+  'Osaka Castle Park':       'center top',
+  'Arashiyama Bamboo Grove': 'center center',
+}
+
 // ── Carousel ─────────────────────────────────────────────────────────────────
-function Carousel({ images, alt }) {
+function Carousel({ images, alt, objectPosition = 'center center' }) {
   const validImgs = images.filter(Boolean)
   const [cur, setCur] = useState(0)
   const timerRef = useRef(null)
@@ -45,6 +59,7 @@ function Carousel({ images, alt }) {
             src={src}
             alt={alt}
             className="w-full h-full object-cover block"
+            style={{ objectPosition }}
             loading="lazy"
           />
         </div>
@@ -96,7 +111,11 @@ function PlaceCard({ dayNum, place, visitedMap, onToggleVisit, onSaveNote }) {
 
   return (
     <div className="bg-white flex flex-col border-b border-r border-[#D5D2CA] last:border-r-0">
-      <Carousel images={place.images ?? []} alt={place.n} />
+      <Carousel
+        images={place.images ?? []}
+        alt={place.n}
+        objectPosition={POSITION_MAP[place.n] ?? 'center center'}
+      />
 
       <div className="p-5 flex flex-col flex-1">
         {/* Name + visited badge */}

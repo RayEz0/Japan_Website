@@ -168,14 +168,13 @@ export default function Sidebar() {
                   : 'text-[#777] hover:text-[#0C0C0C] hover:bg-[#F5F4F0]',
               ].join(' ')
             }
-            style={{ fontFamily: "'Outfit', sans-serif" }}
           >
             {({ isActive }) => (
               <>
                 {isActive && (
                   <span
                     className="absolute left-0 top-0 bottom-0 w-[2.5px]"
-                    style={{ background: '#B8321A' }}
+                    style={{ background: accent.dot }}
                   />
                 )}
                 <span className="w-[58px] h-[50px] flex items-center justify-center text-base flex-shrink-0">
