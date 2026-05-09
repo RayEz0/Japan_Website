@@ -4,6 +4,8 @@ import Sidebar from './components/Sidebar'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Itinerary from './pages/Itinerary'
+import Expenses  from './pages/Expenses'
+import Savings   from './pages/Savings'
 
 // ── Placeholder (Phase 4+) ───────────────────────────────────────────────────
 function PageShell({ title, index }) {
@@ -66,8 +68,8 @@ export default function App() {
             <Route path="/"          element={<Dashboard />} />
             <Route path="/itinerary" element={<Itinerary />} />
             <Route path="/budget"    element={<PageShell title="Budget"   index="003 — Finances"      />} />
-            <Route path="/savings"   element={<PageShell title="Savings"  index="003B — Savings"      />} />
-            <Route path="/expenses"  element={<PageShell title="Expenses" index="003C — Expense Log"  />} />
+            <Route path="/savings"   element={<Savings />} />
+            <Route path="/expenses"  element={<Expenses />} />
             <Route path="/stays"     element={<PageShell title="Stays"    index="005 — Accommodation" />} />
             <Route path="/gifts"     element={<PageShell title="Gifts"    index="006 — Checklist"     />} />
           </Route>
