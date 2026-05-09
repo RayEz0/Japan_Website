@@ -40,12 +40,25 @@ const PAGE_TITLES = {
   '/gifts':     'Gifts',
 }
 
+const LS_COLLAPSED = 'japan2027-sidebar-collapsed'
+
 // ── Protected shell ──────────────────────────────────────────────────────────
 function AppLayout() {
   const { user, loading } = useAuth()
   const location = useLocation()
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen,      setSidebarOpen]      = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(
+    () => { try { return localStorage.getItem(LS_COLLAPSED) === 'true' } catch { return false } }
+  )
   const pageTitle = PAGE_TITLES[location.pathname] ?? 'Japan 2027'
+
+  function handleToggleCollapse() {
+    setSidebarCollapsed(prev => {
+      const next = !prev
+      try { localStorage.setItem(LS_COLLAPSED, String(next)) } catch {}
+      return next
+    })
+  }
 
   if (loading) {
     return (
@@ -62,7 +75,12 @@ function AppLayout() {
 
   return (
     <div className="flex min-h-screen bg-[#F5F4F0]">
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <Sidebar
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        isCollapsed={sidebarCollapsed}
+        onToggleCollapse={handleToggleCollapse}
+      />
 
       {/* Mobile top bar */}
       <div className="lg:hidden fixed top-0 left-0 right-0 h-12 bg-white border-b border-[#D5D2CA] flex items-center px-3 z-40">
@@ -82,7 +100,11 @@ function AppLayout() {
         <div className="w-10" />
       </div>
 
-      <main className="lg:ml-60 flex-1 min-w-0 overflow-y-auto h-screen pt-12 lg:pt-0">
+      {/* Main content — margin animates with sidebar on desktop */}
+      <main
+        className={`flex-1 min-w-0 overflow-y-auto h-screen pt-12 lg:pt-0 ${sidebarCollapsed ? 'lg:ml-0' : 'lg:ml-[260px]'}`}
+        style={{ transition: 'margin-left 0.2s cubic-bezier(0.4, 0, 0.2, 1)' }}
+      >
         <AnimatedOutlet />
       </main>
     </div>

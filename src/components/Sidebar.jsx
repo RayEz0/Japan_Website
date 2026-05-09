@@ -85,9 +85,14 @@ const NAV_ITEMS = [
   },
 ]
 
-const SIDEBAR_W = 240
+const SIDEBAR_W = 260
 
-// Tracks desktop breakpoint reactively
+const HamburgerIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <path d="M2 4h11M2 7.5h11M2 11h11"/>
+  </svg>
+)
+
 function useIsDesktop() {
   const [isDesktop, setIsDesktop] = useState(
     typeof window !== 'undefined' ? window.innerWidth >= 1024 : true
@@ -101,14 +106,15 @@ function useIsDesktop() {
   return isDesktop
 }
 
-export default function Sidebar({ isOpen, onClose }) {
+export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }) {
   const { profile, signOut } = useAuth()
   const navigate   = useNavigate()
   const accent     = profile ? ACCENT_COLORS[profile.accent] : ACCENT_COLORS.amber
   const isDesktop  = useIsDesktop()
 
-  // On desktop the sidebar is always fully visible; animation only runs on mobile
-  const xPos = isDesktop ? 0 : isOpen ? 0 : -SIDEBAR_W
+  // Desktop: animate width 260→0. Mobile: animate x (translate).
+  const xPos          = isDesktop ? 0 : isOpen ? 0 : -SIDEBAR_W
+  const animatedWidth = isDesktop ? (isCollapsed ? 0 : SIDEBAR_W) : SIDEBAR_W
 
   async function handleSignOut() {
     await signOut()
@@ -121,7 +127,7 @@ export default function Sidebar({ isOpen, onClose }) {
 
   return (
     <>
-      {/* Dark overlay — mobile only, shown while drawer is open */}
+      {/* Dark overlay — mobile only */}
       <AnimatePresence>
         {isOpen && !isDesktop && (
           <motion.div
@@ -136,18 +142,61 @@ export default function Sidebar({ isOpen, onClose }) {
         )}
       </AnimatePresence>
 
+      {/* Floating re-open tab — desktop only, visible when sidebar is collapsed */}
+      <AnimatePresence>
+        {isDesktop && isCollapsed && (
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            onClick={onToggleCollapse}
+            className="fixed top-[72px] left-0 z-[60] w-8 h-10 bg-white flex items-center justify-center text-[#777] hover:text-[#0C0C0C] transition-colors"
+            style={{
+              borderRight:  '1.5px solid #0C0C0C',
+              borderTop:    '1px solid #D5D2CA',
+              borderBottom: '1px solid #D5D2CA',
+            }}
+            aria-label="Open sidebar"
+          >
+            <HamburgerIcon />
+          </motion.button>
+        )}
+      </AnimatePresence>
+
       {/* Sidebar panel */}
       <motion.aside
         initial={false}
-        animate={{ x: xPos }}
-        transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+        animate={{ x: xPos, width: animatedWidth }}
+        transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
         className="fixed top-0 left-0 bottom-0 flex flex-col z-[60]"
         style={{
-          width:       SIDEBAR_W,
           background:  '#FFFFFF',
           borderRight: '1.5px solid #0C0C0C',
+          overflow:    'hidden',
+          minWidth:    0,
         }}
       >
+        {/* ── Hamburger collapse row — desktop only, above logo ── */}
+        <div
+          className="hidden lg:flex items-center justify-between px-3.5 flex-shrink-0"
+          style={{ height: 44, borderBottom: '1px solid #E8E5DE' }}
+        >
+          <span
+            className="text-[8px] uppercase tracking-[1.2px] text-[#BBBBBB]"
+            style={{ fontFamily: "'JetBrains Mono', monospace", whiteSpace: 'nowrap' }}
+          >
+            JP / 2027
+          </span>
+          <button
+            onClick={onToggleCollapse}
+            className="w-7 h-7 flex items-center justify-center text-[#777] hover:text-[#0C0C0C] transition-colors flex-shrink-0"
+            aria-label="Collapse sidebar"
+          >
+            <HamburgerIcon />
+          </button>
+        </div>
+
         {/* ✕ Close button — mobile only */}
         <button
           onClick={onClose}
@@ -170,7 +219,7 @@ export default function Sidebar({ isOpen, onClose }) {
               JP
             </span>
           </div>
-          <div>
+          <div style={{ whiteSpace: 'nowrap' }}>
             <div className="text-[17px] font-semibold text-[#0C0C0C] leading-none"
                  style={{ fontFamily: "'Fraunces', serif" }}>
               Japan 2027
@@ -187,7 +236,12 @@ export default function Sidebar({ isOpen, onClose }) {
           <div className="px-3.5 pt-4 pb-2 flex-shrink-0">
             <div
               className="flex items-center gap-2 px-3 py-2 rounded-sm text-xs font-medium"
-              style={{ background: accent.bg, color: accent.text, fontFamily: "'JetBrains Mono', monospace" }}
+              style={{
+                background:  accent.bg,
+                color:       accent.text,
+                fontFamily:  "'JetBrains Mono', monospace",
+                whiteSpace:  'nowrap',
+              }}
             >
               <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: accent.dot }} />
               {profile.name}
@@ -223,7 +277,9 @@ export default function Sidebar({ isOpen, onClose }) {
                   <span className="w-[58px] h-[50px] flex items-center justify-center text-base flex-shrink-0">
                     {item.icon}
                   </span>
-                  <span className="tracking-[0.1px]">{item.label}</span>
+                  <span className="tracking-[0.1px]" style={{ whiteSpace: 'nowrap' }}>
+                    {item.label}
+                  </span>
                 </>
               )}
             </NavLink>
@@ -244,7 +300,9 @@ export default function Sidebar({ isOpen, onClose }) {
                 <path d="M13 7.5H6"/>
               </svg>
             </span>
-            <span className="uppercase tracking-widest text-[9px]">Sign Out</span>
+            <span className="uppercase tracking-widest text-[9px]" style={{ whiteSpace: 'nowrap' }}>
+              Sign Out
+            </span>
           </button>
         </div>
       </motion.aside>

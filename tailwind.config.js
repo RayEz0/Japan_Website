@@ -7,8 +7,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans:  ['DM Sans', 'system-ui', 'sans-serif'],
-        serif: ['Fraunces', 'Georgia', 'serif'],
+        sans:  ['Inter', 'system-ui', 'sans-serif'],
+        serif: ['Instrument Serif', 'Fraunces', 'Georgia', 'serif'],
         mono:  ["'JetBrains Mono'", 'ui-monospace', 'monospace'],
       },
     },

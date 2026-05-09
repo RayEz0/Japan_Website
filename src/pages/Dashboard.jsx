@@ -5,13 +5,13 @@ import { ACCENT_COLORS } from '../lib/users'
 const TRIP_DATE = new Date('2027-11-23T06:00:00')
 
 const BUDGET_ITEMS = [
-  { icon: '✈️', label: 'Flights',        note: 'Per person · Air India / JAL',           inr: '₹80,000–90,000'  },
-  { icon: '🏨', label: 'Accommodation',  note: 'Per person · 12 nights split',            inr: '₹24,000–40,000'  },
-  { icon: '🍜', label: 'Food + Activities', note: 'Per person · ~₹4,000/day · 13 days',  inr: '₹45,000–55,000'  },
-  { icon: '🎢', label: 'Disney Premier', note: 'Per person · 4 rides skip-the-line',       inr: '₹10,800–18,000'  },
-  { icon: '🚃', label: 'Transport',      note: 'Per person · Suica + Narita + Nankai',    inr: '₹15,000–22,000'  },
-  { icon: '🚗', label: 'Fuji Car Rental',note: 'Group split · IDP required',              inr: '₹2,000–4,000'    },
-  { icon: '📶', label: 'eSIM Airalo',    note: '15 GB · Buy before leaving India',         inr: '₹1,500–3,500'    },
+  { icon: '✈️', label: 'Flights',       note: 'Per person · Air India / JAL',                inr: '₹55,000'   },
+  { icon: '🏨', label: 'Accommodation', note: 'Per person · hostel / capsule / Airbnb',       inr: '₹40,000'   },
+  { icon: '🍜', label: 'Food & Drink',  note: 'Per person · ~₹2,300/day · 13 days',          inr: '₹30,000'   },
+  { icon: '🚃', label: 'Transport',     note: 'Per person · JR Pass + IC card',               inr: '₹25,000'   },
+  { icon: '🎡', label: 'Activities',    note: 'Per person · Disney, TeamLab, temples',        inr: '₹20,000'   },
+  { icon: '🛍️', label: 'Shopping',      note: 'Per person · gifts, souvenirs, clothing',      inr: '₹18,000'   },
+  { icon: '🧮', label: 'Buffer',        note: 'Per person · SIM, emergencies, contingency',   inr: '₹12,000'   },
 ]
 
 const NEXT_ACTIONS = [
@@ -23,13 +23,14 @@ const NEXT_ACTIONS = [
   { tag: 'Book Ahead',      title: 'Sagano Torokko Train',         sub: '3+ months ahead · right-side seats'      },
 ]
 
-const CITIES = [
-  { city: 'Bengaluru', role: 'Origin', icon: '🛫' },
-  { city: 'Tokyo',     role: '6 nights',  icon: '🗼' },
-  { city: 'Mt Fuji',   role: '1 day',     icon: '🗻' },
-  { city: 'Kyoto',     role: '3 nights',  icon: '⛩️' },
-  { city: 'Nara',      role: 'Day trip',  icon: '🦌' },
-  { city: 'Osaka',     role: '3 nights',  icon: '🏯' },
+const ROUTE = [
+  { label: 'BLR',     nights: null },
+  { label: 'Tokyo',   nights: 6    },
+  { label: 'Mt Fuji', nights: null },
+  { label: 'Kyoto',   nights: 3    },
+  { label: 'Nara',    nights: null },
+  { label: 'Osaka',   nights: 3    },
+  { label: 'KIX',     nights: null },
 ]
 
 function pad(n) { return String(n).padStart(2, '0') }
@@ -76,11 +77,44 @@ export default function Dashboard() {
         </div>
       </div>
 
+      {/* ── Route strip ── */}
+      <div className="bg-white border-b border-[#D5D2CA] px-4 lg:px-12 py-3 overflow-x-auto">
+        <div className="flex items-center gap-0 min-w-max">
+          {ROUTE.map((stop, i) => (
+            <div key={stop.label} className="flex items-center">
+              {i > 0 && (
+                <div className="w-6 lg:w-8 h-px bg-[#D5D2CA] flex-shrink-0" />
+              )}
+              <div className="flex items-center gap-1.5">
+                <span
+                  className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                  style={{ background: accent.dot }}
+                />
+                <span
+                  className="text-[9px] font-medium text-[#0C0C0C]"
+                  style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                >
+                  {stop.label}
+                </span>
+                {stop.nights && (
+                  <span
+                    className="text-[8px] text-[#777]"
+                    style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                  >
+                    ({stop.nights}n)
+                  </span>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* ── Main grid ── */}
       <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr_260px] border-b border-[#D5D2CA]">
 
         {/* ── Countdown ── */}
-        <div className="lg:row-span-2 border-b lg:border-b-0 border-r-0 lg:border-r border-[#D5D2CA] p-5 lg:p-10 flex flex-col justify-between">
+        <div className="lg:row-span-2 border-b lg:border-b-0 border-r-0 lg:border-r border-[#D5D2CA] p-5 lg:p-10 flex flex-col">
           <div>
             <p className="text-[9.5px] uppercase tracking-[1.5px] text-[#777] mb-4"
                style={{ fontFamily: "'JetBrains Mono', monospace" }}>
@@ -132,29 +166,6 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Route */}
-          <div className="mt-5 lg:mt-6">
-            <p className="text-[9.5px] uppercase tracking-[1.5px] text-[#777] mb-3"
-               style={{ fontFamily: "'JetBrains Mono', monospace" }}>
-              Route
-            </p>
-            <div className="flex flex-col gap-2">
-              {CITIES.map((c, i) => (
-                <div key={c.city} className="flex items-center gap-2.5">
-                  <span className="text-base w-5 text-center">{c.icon}</span>
-                  <div>
-                    <span className="text-sm font-medium text-[#0C0C0C]"
-                          style={{ fontFamily: "'DM Sans', sans-serif" }}>{c.city}</span>
-                    <span className="text-[9px] text-[#777] ml-2"
-                          style={{ fontFamily: "'JetBrains Mono', monospace" }}>{c.role}</span>
-                  </div>
-                  {i < CITIES.length - 1 && (
-                    <div className="ml-1 w-px h-3 bg-[#D5D2CA] self-stretch" />
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
 
         {/* ── Stat cards ── */}
@@ -165,8 +176,8 @@ export default function Dashboard() {
           </p>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
             {[
-              { label: 'Total Budget',  value: '₹2,25,000', sub: 'combined · 3 pax' },
-              { label: 'Per Person',    value: '₹75,000',   sub: 'target · all-in'  },
+              { label: 'Total Budget',  value: '₹6,00,000', sub: 'combined · 3 pax' },
+              { label: 'Per Person',    value: '₹2,00,000', sub: 'target · all-in'  },
               { label: 'Trip Length',   value: '13',        sub: 'days in Japan'    },
             ].map(s => (
               <div key={s.label} className="border border-[#D5D2CA] bg-white p-4">
@@ -193,7 +204,7 @@ export default function Dashboard() {
               style={{ borderColor: accent.dot, background: accent.bg }}
             >
               <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: accent.dot }} />
-              <p className="text-sm font-medium" style={{ color: accent.text, fontFamily: "'DM Sans', sans-serif" }}>
+              <p className="text-sm font-medium" style={{ color: accent.text, fontFamily: "'Inter', sans-serif" }}>
                 Welcome back, {profile.name}
               </p>
             </div>
@@ -214,7 +225,7 @@ export default function Dashboard() {
                   {a.tag}
                 </p>
                 <p className="text-[12.5px] font-medium text-[#0C0C0C] leading-snug"
-                   style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                   style={{ fontFamily: "'Inter', sans-serif" }}>
                   {a.title}
                 </p>
                 <p className="text-[9.5px] text-[#777] mt-0.5"
@@ -238,7 +249,7 @@ export default function Dashboard() {
                 <span className="text-lg w-7 text-center flex-shrink-0">{item.icon}</span>
                 <div className="flex-1 min-w-0">
                   <p className="text-[12.5px] font-medium text-[#0C0C0C]"
-                     style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                     style={{ fontFamily: "'Inter', sans-serif" }}>
                     {item.label}
                   </p>
                   <p className="text-[9px] text-[#777] mt-0.5"
@@ -249,7 +260,7 @@ export default function Dashboard() {
                     <div
                       className="absolute left-0 top-0 h-full bg-[#0C0C0C]"
                       style={{
-                        width: `${[100, 45, 65, 20, 24, 5, 3][i]}%`,
+                        width: `${[100, 73, 55, 45, 36, 33, 22][i]}%`,
                         transition: 'width 1s ease',
                       }}
                     />
