@@ -88,24 +88,24 @@ export default function Gifts() {
     <div className="min-h-screen bg-[#F5F4F0]">
 
       {/* Hero */}
-      <div className="relative h-64 overflow-hidden flex items-end">
+      <div className="relative h-[200px] lg:h-64 overflow-hidden flex items-end">
         <div className="absolute inset-0 bg-cover bg-center"
              style={{ backgroundImage: "url('https://images.unsplash.com/photo-1513884923432-2b3e1d12348e?w=1400&q=70&auto=format&fit=crop')" }} />
         <div className="absolute inset-0 bg-gradient-to-b from-black/15 to-black/70" />
-        <div className="relative z-10 px-12 pb-7 w-full">
+        <div className="relative z-10 px-4 pb-5 lg:px-12 lg:pb-7 w-full">
           <p className="text-[9px] uppercase tracking-[1.8px] text-white/65 mb-1.5"
              style={{ fontFamily: "'JetBrains Mono', monospace" }}>006 — CHECKLIST</p>
-          <h1 className="text-[42px] font-bold text-white leading-none"
+          <h1 className="text-[32px] lg:text-[42px] font-bold text-white leading-none"
               style={{ fontFamily: "'Fraunces', serif", letterSpacing: '-1px' }}>
             Gifts &amp; <em className="not-italic" style={{ color: 'rgba(255,200,150,.95)' }}>Souvenirs</em>
           </h1>
         </div>
       </div>
 
-      <div className="px-12 py-8">
+      <div className="px-4 lg:px-12 py-6 lg:py-8">
 
         {/* Summary bar */}
-        <div className="flex items-center gap-8 border-[1.5px] border-[#0C0C0C] bg-white px-6 py-4 mb-7">
+        <div className="flex flex-wrap items-center gap-4 lg:gap-8 border-[1.5px] border-[#0C0C0C] bg-white px-6 py-4 mb-7">
           <div>
             <p className="text-[8px] uppercase tracking-[1.2px] text-[#777] mb-0.5"
                style={{ fontFamily: "'JetBrains Mono', monospace" }}>Checked Off</p>
@@ -166,7 +166,8 @@ export default function Gifts() {
         </div>
 
         {/* Category filter tabs */}
-        <div className="flex border-[1.5px] border-[#0C0C0C] overflow-hidden w-fit mb-7">
+        <div className="overflow-x-auto mb-7">
+        <div className="flex border-[1.5px] border-[#0C0C0C] overflow-hidden w-fit min-w-max">
           {CATEGORIES.map(cat => {
             const on = filter === cat
             return (
@@ -184,6 +185,7 @@ export default function Gifts() {
               </button>
             )
           })}
+        </div>
         </div>
 
         {/* Gift list */}
@@ -210,7 +212,7 @@ export default function Gifts() {
                 <div
                   key={gift.id}
                   onClick={() => handleToggle(gift)}
-                  className="flex items-center gap-4 px-6 py-4 border-b border-[#D5D2CA] last:border-0 cursor-pointer hover:bg-[#FAFAF8] transition-colors"
+                  className="flex items-center gap-4 px-3 py-3 lg:px-6 lg:py-4 border-b border-[#D5D2CA] last:border-0 cursor-pointer hover:bg-[#FAFAF8] transition-colors"
                   style={{ opacity: gift.checked ? 0.6 : 1 }}
                 >
                   {/* Checkbox */}
@@ -234,7 +236,7 @@ export default function Gifts() {
                     <p
                       className="text-[14px] font-medium leading-tight"
                       style={{
-                        fontFamily:     "'Outfit', sans-serif",
+                        fontFamily:     "'DM Sans', sans-serif",
                         color:          gift.checked ? '#999' : '#0C0C0C',
                         textDecoration: gift.checked ? 'line-through' : 'none',
                       }}

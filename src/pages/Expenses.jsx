@@ -109,7 +109,7 @@ function ExpenseModal({ expense, onClose }) {
                 return (
                   <div key={key} className="flex justify-between items-center py-2.5 border-b border-[#D5D2CA] last:border-0">
                     <span className="text-[13px] text-[#0C0C0C]"
-                          style={{ fontFamily: "'Outfit', sans-serif" }}>
+                          style={{ fontFamily: "'DM Sans', sans-serif" }}>
                       {name}
                       {isPaid && (
                         <span className="ml-2 text-[7.5px] text-[#B8321A] uppercase tracking-wide"
@@ -257,21 +257,21 @@ export default function Expenses() {
     <div className="min-h-screen bg-[#F5F4F0]">
 
       {/* Hero */}
-      <div className="relative h-64 overflow-hidden flex items-end">
+      <div className="relative h-[200px] lg:h-64 overflow-hidden flex items-end">
         <div className="absolute inset-0 bg-cover bg-center"
              style={{ backgroundImage: "url('https://images.unsplash.com/photo-1554224154-22dec7ec8818?w=1400&q=70&auto=format&fit=crop')" }} />
         <div className="absolute inset-0 bg-gradient-to-b from-black/15 to-black/70" />
-        <div className="relative z-10 px-12 pb-7 w-full">
+        <div className="relative z-10 px-4 pb-5 lg:px-12 lg:pb-7 w-full">
           <p className="text-[9px] uppercase tracking-[1.8px] text-white/65 mb-1.5"
              style={{ fontFamily: "'JetBrains Mono', monospace" }}>003C — EXPENSE LOG</p>
-          <h1 className="text-[42px] font-bold text-white leading-none"
+          <h1 className="text-[32px] lg:text-[42px] font-bold text-white leading-none"
               style={{ fontFamily: "'Fraunces', serif", letterSpacing: '-1px' }}>
             Expense <em className="not-italic" style={{ color: 'rgba(255,200,150,.95)' }}>Log</em>
           </h1>
         </div>
       </div>
 
-      <div className="max-w-none px-12 py-8">
+      <div className="max-w-none px-4 lg:px-12 py-6 lg:py-8">
 
         {/* Total bar */}
         <div className="flex items-center justify-between border-[1.5px] border-[#0C0C0C] bg-white px-6 py-4 mb-7">
@@ -283,7 +283,7 @@ export default function Expenses() {
           </p>
         </div>
 
-        <div className="grid grid-cols-[1fr_320px] gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 lg:gap-8">
 
           {/* ── Left column ── */}
           <div>
@@ -295,7 +295,7 @@ export default function Expenses() {
                 Add Expense
               </h2>
               <form onSubmit={handleAdd}>
-                <div className="grid grid-cols-4 gap-4 mb-4">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                   {/* Name */}
                   <div className="col-span-2">
                     <label className="block text-[8px] uppercase tracking-[1px] text-[#777] mb-1.5"
@@ -432,7 +432,7 @@ export default function Expenses() {
             </div>
 
             {/* Filter bar */}
-            <div className="flex items-center gap-3 mb-4">
+            <div className="flex flex-wrap items-center gap-3 mb-4">
               <p className="text-[8.5px] uppercase tracking-[0.8px] text-[#777] flex-shrink-0"
                  style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                 Filter:
@@ -506,7 +506,7 @@ export default function Expenses() {
                         {e.category}
                       </p>
                       <p className="text-[14px] font-medium text-[#0C0C0C] leading-tight"
-                         style={{ fontFamily: "'Outfit', sans-serif" }}>
+                         style={{ fontFamily: "'DM Sans', sans-serif" }}>
                         {e.name}
                       </p>
                       {e.notes && (
@@ -577,7 +577,7 @@ export default function Expenses() {
                     <div className="flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full" style={{ background: ac.dot }} />
                       <span className="text-[13px] font-medium text-[#0C0C0C]"
-                            style={{ fontFamily: "'Outfit', sans-serif" }}>
+                            style={{ fontFamily: "'DM Sans', sans-serif" }}>
                         {name}
                       </span>
                     </div>
@@ -667,7 +667,7 @@ export default function Expenses() {
           <div className="bg-white border-[1.5px] border-[#0C0C0C] p-8 max-w-sm w-full mx-4"
                onClick={e => e.stopPropagation()}>
             <p className="text-[14px] text-[#0C0C0C] mb-6 leading-relaxed"
-               style={{ fontFamily: "'Outfit', sans-serif" }}>
+               style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Delete this expense? This can't be undone.
             </p>
             <div className="flex justify-end gap-3">

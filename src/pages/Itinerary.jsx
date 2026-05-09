@@ -121,7 +121,7 @@ function PlaceCard({ dayNum, place, visitedMap, onToggleVisit, onSaveNote }) {
         {/* Name + visited badge */}
         <div className="flex items-start gap-2 mb-1">
           <h3 className="text-base font-bold text-[#0C0C0C] leading-tight flex-1"
-              style={{ fontFamily: "'Outfit', sans-serif" }}>
+              style={{ fontFamily: "'DM Sans', sans-serif" }}>
             {place.n}
             {isVisited && <span className="ml-1.5 text-sm">✅</span>}
           </h3>
@@ -135,7 +135,7 @@ function PlaceCard({ dayNum, place, visitedMap, onToggleVisit, onSaveNote }) {
 
         {/* Description */}
         <p className="text-[15px] text-[#3A3A3A] leading-[1.75] mb-3"
-           style={{ fontFamily: "'Outfit', sans-serif" }}>
+           style={{ fontFamily: "'DM Sans', sans-serif" }}>
           {place.d}
         </p>
 
@@ -192,7 +192,7 @@ function OptionalRow({ place }) {
       </span>
       <div>
         <p className="text-[13px] font-medium text-[#3A3A3A]"
-           style={{ fontFamily: "'Outfit', sans-serif" }}>
+           style={{ fontFamily: "'DM Sans', sans-serif" }}>
           {place.n}
         </p>
         <p className="text-[9px] text-[#777] mt-0.5"
@@ -201,7 +201,7 @@ function OptionalRow({ place }) {
         </p>
         {place.d && (
           <p className="text-[12px] text-[#777] mt-1 leading-relaxed"
-             style={{ fontFamily: "'Outfit', sans-serif" }}>
+             style={{ fontFamily: "'DM Sans', sans-serif" }}>
             {place.d.slice(0, 80)}…
           </p>
         )}
@@ -223,12 +223,12 @@ function DayAccordion({ day, dayIndex, visitedMap, onToggleVisit, onSaveNote }) 
       {/* Header */}
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center gap-4 px-12 py-[18px] text-left hover:bg-[#EFEDE7] transition-colors duration-150 select-none"
+        className="w-full flex items-center gap-3 lg:gap-4 px-4 py-3 lg:px-12 lg:py-[18px] text-left hover:bg-[#EFEDE7] transition-colors duration-150 select-none"
         style={{ borderBottom: open ? '1px solid #0C0C0C' : 'none' }}
       >
         <span
-          className="font-light text-[#BBBBBB] w-[52px] flex-shrink-0 leading-none"
-          style={{ fontFamily: "'Fraunces', serif", fontSize: 42 }}
+          className="text-[28px] lg:text-[42px] font-light text-[#BBBBBB] w-[38px] lg:w-[52px] flex-shrink-0 leading-none"
+          style={{ fontFamily: "'Fraunces', serif" }}
         >
           {day.num}
         </span>
@@ -238,7 +238,7 @@ function DayAccordion({ day, dayIndex, visitedMap, onToggleVisit, onSaveNote }) 
              style={{ fontFamily: "'JetBrains Mono', monospace" }}>
             {day.city}
           </p>
-          <p className="text-[22px] font-semibold text-[#0C0C0C] leading-tight"
+          <p className="text-[18px] lg:text-[22px] font-semibold text-[#0C0C0C] leading-tight"
              style={{ fontFamily: "'Fraunces', serif" }}>
             {day.title}
           </p>
@@ -270,9 +270,9 @@ function DayAccordion({ day, dayIndex, visitedMap, onToggleVisit, onSaveNote }) 
       {open && (
         <div className="border-b-2 border-[#0C0C0C]">
           {/* Place cards grid */}
-          <div className="px-12 pt-6 pb-4">
+          <div className="px-2 lg:px-12 pt-4 lg:pt-6 pb-2 lg:pb-4">
             <div className="grid gap-px bg-[#D5D2CA] border border-[#D5D2CA]"
-                 style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
+                 style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(300px, 100%), 1fr))' }}>
               {day.places.map((place, pi) =>
                 place.optional
                   ? null
@@ -300,7 +300,7 @@ function DayAccordion({ day, dayIndex, visitedMap, onToggleVisit, onSaveNote }) 
           </div>
 
           {/* Footer: food / stay / next */}
-          <div className="mx-12 border-t border-[#D5D2CA] pt-4 pb-6 flex flex-col gap-3">
+          <div className="mx-3 lg:mx-12 border-t border-[#D5D2CA] pt-4 pb-6 flex flex-col gap-3">
             {[
               { label: 'Food',  value: day.food },
               { label: 'Stay',  value: day.stay },
@@ -312,7 +312,7 @@ function DayAccordion({ day, dayIndex, visitedMap, onToggleVisit, onSaveNote }) 
                   {label}
                 </p>
                 <p className="text-[15px] text-[#3A3A3A] leading-[1.75]"
-                   style={{ fontFamily: "'Outfit', sans-serif" }}>
+                   style={{ fontFamily: "'DM Sans', sans-serif" }}>
                   {value}
                 </p>
               </div>
@@ -379,18 +379,18 @@ export default function Itinerary() {
     <div className="min-h-screen bg-[#F5F4F0]">
 
       {/* Hero */}
-      <div className="relative h-64 overflow-hidden flex items-end">
+      <div className="relative h-[200px] lg:h-64 overflow-hidden flex items-end">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: "url('https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=1400&q=70&auto=format&fit=crop')" }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/15 to-black/70" />
-        <div className="relative z-10 px-12 pb-7 w-full">
+        <div className="relative z-10 px-4 pb-5 lg:px-12 lg:pb-7 w-full">
           <p className="text-[9px] uppercase tracking-[1.8px] text-white/65 mb-1.5"
              style={{ fontFamily: "'JetBrains Mono', monospace" }}>
             002 — ROUTE
           </p>
-          <h1 className="text-[42px] font-bold text-white leading-none"
+          <h1 className="text-[32px] lg:text-[42px] font-bold text-white leading-none"
               style={{ fontFamily: "'Fraunces', serif", letterSpacing: '-1px' }}>
             Itinerary <em className="not-italic" style={{ color: 'rgba(255,200,150,0.95)' }}>2027</em>
           </h1>

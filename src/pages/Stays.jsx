@@ -71,7 +71,7 @@ function CitySection({ city, statuses, onCycle }) {
       </div>
 
       {/* Hotel cards */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {city.options.map(opt => {
           const statusKey = `${city.key}-${opt.tier}`
           const status    = statuses[statusKey] ?? 'Not booked'
@@ -161,24 +161,24 @@ export default function Stays() {
     <div className="min-h-screen bg-[#F5F4F0]">
 
       {/* Hero */}
-      <div className="relative h-64 overflow-hidden flex items-end">
+      <div className="relative h-[200px] lg:h-64 overflow-hidden flex items-end">
         <div className="absolute inset-0 bg-cover bg-center"
              style={{ backgroundImage: "url('https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=1400&q=70&auto=format&fit=crop')" }} />
         <div className="absolute inset-0 bg-gradient-to-b from-black/15 to-black/70" />
-        <div className="relative z-10 px-12 pb-7 w-full">
+        <div className="relative z-10 px-4 pb-5 lg:px-12 lg:pb-7 w-full">
           <p className="text-[9px] uppercase tracking-[1.8px] text-white/65 mb-1.5"
              style={{ fontFamily: "'JetBrains Mono', monospace" }}>005 — ACCOMMODATION</p>
-          <h1 className="text-[42px] font-bold text-white leading-none"
+          <h1 className="text-[32px] lg:text-[42px] font-bold text-white leading-none"
               style={{ fontFamily: "'Fraunces', serif", letterSpacing: '-1px' }}>
             Where We <em className="not-italic" style={{ color: 'rgba(255,200,150,.95)' }}>Stay</em>
           </h1>
         </div>
       </div>
 
-      <div className="px-12 py-8">
+      <div className="px-4 lg:px-12 py-6 lg:py-8">
 
         {/* Summary strip */}
-        <div className="flex items-center gap-8 border-[1.5px] border-[#0C0C0C] bg-white px-6 py-4 mb-8">
+        <div className="flex flex-wrap items-center gap-4 lg:gap-8 border-[1.5px] border-[#0C0C0C] bg-white px-6 py-4 mb-6 lg:mb-8">
           <div>
             <p className="text-[8px] uppercase tracking-[1.2px] text-[#777] mb-0.5"
                style={{ fontFamily: "'JetBrains Mono', monospace" }}>Total Nights</p>

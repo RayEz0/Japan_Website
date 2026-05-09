@@ -131,21 +131,21 @@ export default function Savings() {
     <div className="min-h-screen bg-[#F5F4F0]">
 
       {/* Hero */}
-      <div className="relative h-64 overflow-hidden flex items-end">
+      <div className="relative h-[200px] lg:h-64 overflow-hidden flex items-end">
         <div className="absolute inset-0 bg-cover bg-center"
              style={{ backgroundImage: "url('https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=1400&q=70&auto=format&fit=crop')" }} />
         <div className="absolute inset-0 bg-gradient-to-b from-black/15 to-black/70" />
-        <div className="relative z-10 px-12 pb-7 w-full">
+        <div className="relative z-10 px-4 pb-5 lg:px-12 lg:pb-7 w-full">
           <p className="text-[9px] uppercase tracking-[1.8px] text-white/65 mb-1.5"
              style={{ fontFamily: "'JetBrains Mono', monospace" }}>003B — SAVINGS</p>
-          <h1 className="text-[42px] font-bold text-white leading-none"
+          <h1 className="text-[32px] lg:text-[42px] font-bold text-white leading-none"
               style={{ fontFamily: "'Fraunces', serif", letterSpacing: '-1px' }}>
             Savings <em className="not-italic" style={{ color: 'rgba(255,200,150,.95)' }}>Tracker</em>
           </h1>
         </div>
       </div>
 
-      <div className="px-12 py-8">
+      <div className="px-4 lg:px-12 py-6 lg:py-8">
 
         {/* Group total banner */}
         <div className="border border-[#D5D2CA] bg-white p-6 mb-7">
@@ -183,7 +183,8 @@ export default function Savings() {
         </div>
 
         {/* Tabs */}
-        <div className="flex border-[1.5px] border-[#0C0C0C] overflow-hidden w-fit mb-7">
+        <div className="overflow-x-auto mb-7">
+        <div className="flex border-[1.5px] border-[#0C0C0C] overflow-hidden w-fit">
           {['combined', ...PERSONS.map(p => p.key)].map(key => {
             const label = key === 'combined' ? 'Combined' : PERSONS.find(p => p.key === key)?.name
             const on    = tab === key
@@ -202,6 +203,7 @@ export default function Savings() {
               </button>
             )
           })}
+        </div>
         </div>
 
         {loading ? (
@@ -228,7 +230,7 @@ export default function Savings() {
 function CombinedView({ data }) {
   return (
     <div>
-      <div className="grid mb-6" style={{ gridTemplateColumns: 'repeat(6, 1fr)', gap: 1, background: '#D5D2CA', border: '1px solid #D5D2CA' }}>
+      <div className="grid grid-cols-3 lg:grid-cols-6 mb-6" style={{ gap: 1, background: '#D5D2CA', border: '1px solid #D5D2CA' }}>
         {MONTHS.map((m, i) => {
           const total = PERSONS.reduce((s, p) => s + (Number(data[p.key]?.[m]) || 0), 0)
           const mt    = MONTHLY_TARGET * 3
@@ -258,7 +260,7 @@ function CombinedView({ data }) {
       </div>
 
       {/* Summary */}
-      <div className="grid grid-cols-3 gap-6 border-t-[1.5px] border-[#0C0C0C] pt-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 border-t-[1.5px] border-[#0C0C0C] pt-6">
         {PERSONS.map(p => {
           const tot  = allTotal({ [p.key]: Object.fromEntries(MONTHS.map(m => [m, 0])), ...{ [p.key]: {} } })
           // recalculate properly
@@ -369,7 +371,7 @@ function PersonView({ personKey, data, isMe, onSave }) {
       </div>
 
       {/* Summary row */}
-      <div className="grid grid-cols-3 gap-6 border-t-[1.5px] border-[#0C0C0C] pt-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 border-t-[1.5px] border-[#0C0C0C] pt-6">
         <div>
           <p className="text-[8px] uppercase tracking-[1.2px] text-[#777] mb-2"
              style={{ fontFamily: "'JetBrains Mono', monospace" }}>Total Saved</p>

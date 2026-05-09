@@ -58,18 +58,18 @@ export default function Dashboard() {
     <div className="min-h-screen bg-[#F5F4F0]">
 
       {/* ── Hero banner ── */}
-      <div className="relative h-64 overflow-hidden flex items-end">
+      <div className="relative h-[200px] lg:h-64 overflow-hidden flex items-end">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: "url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1400&q=70&auto=format&fit=crop')" }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/15 to-black/70" />
-        <div className="relative z-10 px-12 pb-7 w-full">
+        <div className="relative z-10 px-4 pb-5 lg:px-12 lg:pb-7 w-full">
           <p className="text-[9px] uppercase tracking-[1.8px] text-white/65 mb-1.5"
              style={{ fontFamily: "'JetBrains Mono', monospace" }}>
             001 — OVERVIEW
           </p>
-          <h1 className="text-[42px] font-bold text-white leading-none tracking-tight"
+          <h1 className="text-[32px] lg:text-[42px] font-bold text-white leading-none"
               style={{ fontFamily: "'Fraunces', serif", letterSpacing: '-1px' }}>
             Dashboard
           </h1>
@@ -77,49 +77,63 @@ export default function Dashboard() {
       </div>
 
       {/* ── Main grid ── */}
-      <div className="grid grid-cols-[280px_1fr_260px] border-b border-[#D5D2CA]">
+      <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr_260px] border-b border-[#D5D2CA]">
 
         {/* ── Countdown ── */}
-        <div className="row-span-2 border-r border-[#D5D2CA] p-10 flex flex-col justify-between">
+        <div className="lg:row-span-2 border-b lg:border-b-0 border-r-0 lg:border-r border-[#D5D2CA] p-5 lg:p-10 flex flex-col justify-between">
           <div>
             <p className="text-[9.5px] uppercase tracking-[1.5px] text-[#777] mb-4"
                style={{ fontFamily: "'JetBrains Mono', monospace" }}>
               Departure In
             </p>
-            <div
-              className="text-[118px] font-light text-[#0C0C0C] leading-none tabular-nums"
-              style={{ fontFamily: "'Fraunces', serif", letterSpacing: '-5px' }}
-            >
-              {cd.d}
-            </div>
-            <p className="text-[10px] uppercase tracking-[1.5px] text-[#777] mt-1"
-               style={{ fontFamily: "'JetBrains Mono', monospace" }}>
-              Days
-            </p>
-            <p className="text-[17px] text-[#777] mt-3 italic"
-               style={{ fontFamily: "'Fraunces', serif" }}>
-              November 23, 2027
-            </p>
 
-            {/* HH:MM:SS */}
-            <div className="flex items-end gap-1 mt-5">
-              {[['Hrs', cd.h], ['Min', cd.m], ['Sec', cd.s]].map(([lbl, val], i) => (
-                <div key={lbl} className="flex items-end gap-1">
-                  {i > 0 && <span className="text-[22px] text-[#BBBBBB] pb-0.5"
-                    style={{ fontFamily: "'JetBrains Mono', monospace" }}>:</span>}
-                  <div>
-                    <p className="text-[7px] uppercase tracking-[1px] text-[#777] mb-0.5"
-                       style={{ fontFamily: "'JetBrains Mono', monospace" }}>{lbl}</p>
-                    <span className="text-[22px] text-[#0C0C0C] tabular-nums"
-                          style={{ fontFamily: "'JetBrains Mono', monospace" }}>{val}</span>
-                  </div>
+            {/* Mobile: 2×2 grid */}
+            <div className="lg:hidden grid grid-cols-2 gap-3 mb-3">
+              {[['Days', cd.d], ['Hrs', cd.h], ['Min', cd.m], ['Sec', cd.s]].map(([lbl, val]) => (
+                <div key={lbl} className="border border-[#D5D2CA] bg-white p-3">
+                  <p className="text-[8px] uppercase tracking-[1px] text-[#777] mb-1"
+                     style={{ fontFamily: "'JetBrains Mono', monospace" }}>{lbl}</p>
+                  <span className="text-[36px] font-light text-[#0C0C0C] tabular-nums leading-none"
+                        style={{ fontFamily: "'Fraunces', serif" }}>{val}</span>
                 </div>
               ))}
+            </div>
+
+            {/* Desktop: big number + HH:MM:SS */}
+            <div className="hidden lg:block">
+              <div
+                className="text-[118px] font-light text-[#0C0C0C] leading-none tabular-nums"
+                style={{ fontFamily: "'Fraunces', serif", letterSpacing: '-5px' }}
+              >
+                {cd.d}
+              </div>
+              <p className="text-[10px] uppercase tracking-[1.5px] text-[#777] mt-1"
+                 style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                Days
+              </p>
+              <p className="text-[17px] text-[#777] mt-3 italic"
+                 style={{ fontFamily: "'Fraunces', serif" }}>
+                November 23, 2027
+              </p>
+              <div className="flex items-end gap-1 mt-5">
+                {[['Hrs', cd.h], ['Min', cd.m], ['Sec', cd.s]].map(([lbl, val], i) => (
+                  <div key={lbl} className="flex items-end gap-1">
+                    {i > 0 && <span className="text-[22px] text-[#BBBBBB] pb-0.5"
+                      style={{ fontFamily: "'JetBrains Mono', monospace" }}>:</span>}
+                    <div>
+                      <p className="text-[7px] uppercase tracking-[1px] text-[#777] mb-0.5"
+                         style={{ fontFamily: "'JetBrains Mono', monospace" }}>{lbl}</p>
+                      <span className="text-[22px] text-[#0C0C0C] tabular-nums"
+                            style={{ fontFamily: "'JetBrains Mono', monospace" }}>{val}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
           {/* Route */}
-          <div className="mt-6">
+          <div className="mt-5 lg:mt-6">
             <p className="text-[9.5px] uppercase tracking-[1.5px] text-[#777] mb-3"
                style={{ fontFamily: "'JetBrains Mono', monospace" }}>
               Route
@@ -130,7 +144,7 @@ export default function Dashboard() {
                   <span className="text-base w-5 text-center">{c.icon}</span>
                   <div>
                     <span className="text-sm font-medium text-[#0C0C0C]"
-                          style={{ fontFamily: "'Outfit', sans-serif" }}>{c.city}</span>
+                          style={{ fontFamily: "'DM Sans', sans-serif" }}>{c.city}</span>
                     <span className="text-[9px] text-[#777] ml-2"
                           style={{ fontFamily: "'JetBrains Mono', monospace" }}>{c.role}</span>
                   </div>
@@ -144,12 +158,12 @@ export default function Dashboard() {
         </div>
 
         {/* ── Stat cards ── */}
-        <div className="border-b border-r border-[#D5D2CA] p-8">
+        <div className="border-b border-r-0 lg:border-r border-[#D5D2CA] p-4 lg:p-8">
           <p className="text-[9.5px] uppercase tracking-[1.5px] text-[#777] mb-5"
              style={{ fontFamily: "'JetBrains Mono', monospace" }}>
             Trip Snapshot
           </p>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
             {[
               { label: 'Total Budget',  value: '₹2,25,000', sub: 'combined · 3 pax' },
               { label: 'Per Person',    value: '₹75,000',   sub: 'target · all-in'  },
@@ -160,7 +174,7 @@ export default function Dashboard() {
                    style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                   {s.label}
                 </p>
-                <p className="text-[26px] font-light text-[#0C0C0C] leading-none"
+                <p className="text-[22px] lg:text-[26px] font-light text-[#0C0C0C] leading-none"
                    style={{ fontFamily: "'Fraunces', serif" }}>
                   {s.value}
                 </p>
@@ -179,7 +193,7 @@ export default function Dashboard() {
               style={{ borderColor: accent.dot, background: accent.bg }}
             >
               <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: accent.dot }} />
-              <p className="text-sm font-medium" style={{ color: accent.text, fontFamily: "'Outfit', sans-serif" }}>
+              <p className="text-sm font-medium" style={{ color: accent.text, fontFamily: "'DM Sans', sans-serif" }}>
                 Welcome back, {profile.name}
               </p>
             </div>
@@ -187,7 +201,7 @@ export default function Dashboard() {
         </div>
 
         {/* ── Next Actions ── */}
-        <div className="border-b border-[#D5D2CA] p-7">
+        <div className="border-b border-[#D5D2CA] p-4 lg:p-7">
           <p className="text-[9.5px] uppercase tracking-[1.5px] text-[#777] mb-4"
              style={{ fontFamily: "'JetBrains Mono', monospace" }}>
             Next Actions
@@ -200,7 +214,7 @@ export default function Dashboard() {
                   {a.tag}
                 </p>
                 <p className="text-[12.5px] font-medium text-[#0C0C0C] leading-snug"
-                   style={{ fontFamily: "'Outfit', sans-serif" }}>
+                   style={{ fontFamily: "'DM Sans', sans-serif" }}>
                   {a.title}
                 </p>
                 <p className="text-[9.5px] text-[#777] mt-0.5"
@@ -213,7 +227,7 @@ export default function Dashboard() {
         </div>
 
         {/* ── Budget overview ── */}
-        <div className="col-span-2 p-8">
+        <div className="lg:col-span-2 p-4 lg:p-8">
           <p className="text-[9.5px] uppercase tracking-[1.5px] text-[#777] mb-5"
              style={{ fontFamily: "'JetBrains Mono', monospace" }}>
             Expense Overview — Per Person
@@ -224,7 +238,7 @@ export default function Dashboard() {
                 <span className="text-lg w-7 text-center flex-shrink-0">{item.icon}</span>
                 <div className="flex-1 min-w-0">
                   <p className="text-[12.5px] font-medium text-[#0C0C0C]"
-                     style={{ fontFamily: "'Outfit', sans-serif" }}>
+                     style={{ fontFamily: "'DM Sans', sans-serif" }}>
                     {item.label}
                   </p>
                   <p className="text-[9px] text-[#777] mt-0.5"
@@ -241,7 +255,7 @@ export default function Dashboard() {
                     />
                   </div>
                 </div>
-                <div className="text-right flex-shrink-0 min-w-[110px]">
+                <div className="text-right flex-shrink-0 min-w-[90px] lg:min-w-[110px]">
                   <p className="text-[10.5px] text-[#0C0C0C]"
                      style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                     {item.inr}

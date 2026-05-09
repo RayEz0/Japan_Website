@@ -88,7 +88,7 @@ function BarRow({ cat, multiplier, maxAmount, animate }) {
                 style={{ background: cat.color }} />
           <div>
             <p className="text-[14px] font-medium text-[#0C0C0C]"
-               style={{ fontFamily: "'Outfit', sans-serif" }}>
+               style={{ fontFamily: "'DM Sans', sans-serif" }}>
               {cat.label}
             </p>
             <p className="text-[9px] text-[#BBBBBB] mt-0.5"
@@ -138,24 +138,24 @@ export default function Budget() {
     <div className="min-h-screen bg-[#F5F4F0]">
 
       {/* Hero */}
-      <div className="relative h-64 overflow-hidden flex items-end">
+      <div className="relative h-[200px] lg:h-64 overflow-hidden flex items-end">
         <div className="absolute inset-0 bg-cover bg-center"
              style={{ backgroundImage: "url('https://images.unsplash.com/photo-1554224154-22dec7ec8818?w=1400&q=70&auto=format&fit=crop')" }} />
         <div className="absolute inset-0 bg-gradient-to-b from-black/15 to-black/70" />
-        <div className="relative z-10 px-12 pb-7 w-full">
+        <div className="relative z-10 px-4 pb-5 lg:px-12 lg:pb-7 w-full">
           <p className="text-[9px] uppercase tracking-[1.8px] text-white/65 mb-1.5"
              style={{ fontFamily: "'JetBrains Mono', monospace" }}>003 — FINANCES</p>
-          <h1 className="text-[42px] font-bold text-white leading-none"
+          <h1 className="text-[32px] lg:text-[42px] font-bold text-white leading-none"
               style={{ fontFamily: "'Fraunces', serif", letterSpacing: '-1px' }}>
             Trip <em className="not-italic" style={{ color: 'rgba(255,200,150,.95)' }}>Budget</em>
           </h1>
         </div>
       </div>
 
-      <div className="px-12 py-8">
+      <div className="px-4 lg:px-12 py-6 lg:py-8">
 
         {/* Top bar: total card + toggle */}
-        <div className="flex items-stretch gap-6 mb-8">
+        <div className="flex flex-col lg:flex-row items-stretch gap-4 lg:gap-6 mb-6 lg:mb-8">
 
           {/* Total card */}
           <div className="flex-1 border-[1.5px] border-[#0C0C0C] bg-white px-8 py-6">
@@ -217,7 +217,7 @@ export default function Budget() {
           </div>
         </div>
 
-        <div className="grid grid-cols-[1fr_280px] gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-6 lg:gap-8">
 
           {/* ── Left: bar chart ── */}
           <div className="border-[1.5px] border-[#0C0C0C] bg-white px-8 py-2">

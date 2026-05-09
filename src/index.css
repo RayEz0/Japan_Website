@@ -6,9 +6,22 @@ html, body, #root {
   height: 100%;
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   font-family: 'DM Sans', system-ui, sans-serif;
   background: #F5F4F0;
   color: #0C0C0C;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+button, a, select, input, textarea {
+  touch-action: manipulation;
+}
+
+nav a, nav button {
+  min-height: 44px;
 }

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { AuthProvider, useAuth } from './context/AuthContext'
@@ -29,9 +30,22 @@ function AnimatedOutlet() {
   )
 }
 
+const PAGE_TITLES = {
+  '/':          'Dashboard',
+  '/itinerary': 'Itinerary',
+  '/budget':    'Budget',
+  '/savings':   'Savings',
+  '/expenses':  'Expenses',
+  '/stays':     'Stays',
+  '/gifts':     'Gifts',
+}
+
 // ── Protected shell ──────────────────────────────────────────────────────────
 function AppLayout() {
   const { user, loading } = useAuth()
+  const location = useLocation()
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const pageTitle = PAGE_TITLES[location.pathname] ?? 'Japan 2027'
 
   if (loading) {
     return (
@@ -48,8 +62,27 @@ function AppLayout() {
 
   return (
     <div className="flex min-h-screen bg-[#F5F4F0]">
-      <Sidebar />
-      <main className="ml-[230px] flex-1 min-w-0 overflow-y-auto h-screen">
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
+      {/* Mobile top bar */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-12 bg-white border-b border-[#D5D2CA] flex items-center px-3 z-40">
+        <button
+          onClick={() => setSidebarOpen(true)}
+          className="w-10 h-10 flex items-center justify-center text-[#0C0C0C]"
+          aria-label="Open menu"
+        >
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M2 4h14M2 9h14M2 14h14"/>
+          </svg>
+        </button>
+        <p className="flex-1 text-center text-[14px] font-semibold text-[#0C0C0C]"
+           style={{ fontFamily: "'Fraunces', serif" }}>
+          {pageTitle}
+        </p>
+        <div className="w-10" />
+      </div>
+
+      <main className="lg:ml-60 flex-1 min-w-0 overflow-y-auto h-screen pt-12 lg:pt-0">
         <AnimatedOutlet />
       </main>
     </div>
