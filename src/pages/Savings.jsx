@@ -21,9 +21,9 @@ const MONTH_LABELS = [
   'Apr 27','May 27','Jun 27','Jul 27','Aug 27','Sep 27',
 ]
 
-const PER_PERSON_GOAL = 75000
-const TOTAL_GOAL      = 225000
-const MONTHLY_TARGET  = Math.ceil(PER_PERSON_GOAL / MONTHS.length) // ≈ ₹4,167
+const PER_PERSON_GOAL = 250000
+const TOTAL_GOAL      = 750000
+const MONTHLY_TARGET  = 13000
 
 function fmt(n) { return '₹' + Number(n).toLocaleString('en-IN') }
 
@@ -152,7 +152,7 @@ export default function Savings() {
           <div className="flex items-end justify-between mb-1">
             <p className="text-[9px] uppercase tracking-[1.2px] text-[#777]"
                style={{ fontFamily: "'JetBrains Mono', monospace" }}>
-              Combined · Target {fmt(TOTAL_GOAL)}
+              Combined · Target {fmt(TOTAL_GOAL)} · {fmt(MONTHLY_TARGET)}/month each
             </p>
             <p className="text-[9px] text-[#777]"
                style={{ fontFamily: "'JetBrains Mono', monospace" }}>
