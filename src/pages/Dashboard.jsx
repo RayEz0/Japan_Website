@@ -5,19 +5,19 @@ import { ACCENT_COLORS } from '../lib/users'
 const TRIP_DATE = new Date('2027-11-23T06:00:00')
 
 const BUDGET_ITEMS = [
-  { icon: '✈️', label: 'Flights',       note: 'Per person · Air India / JAL',                inr: '₹55,000'   },
-  { icon: '🏨', label: 'Accommodation', note: 'Per person · hostel / capsule / Airbnb',       inr: '₹40,000'   },
-  { icon: '🍜', label: 'Food & Drink',  note: 'Per person · ~₹2,300/day · 13 days',          inr: '₹30,000'   },
-  { icon: '🚃', label: 'Transport',     note: 'Per person · JR Pass + IC card',               inr: '₹25,000'   },
-  { icon: '🎡', label: 'Activities',    note: 'Per person · Disney, TeamLab, temples',        inr: '₹20,000'   },
-  { icon: '🛍️', label: 'Shopping',      note: 'Per person · gifts, souvenirs, clothing',      inr: '₹18,000'   },
-  { icon: '🧮', label: 'Buffer',        note: 'Per person · SIM, emergencies, contingency',   inr: '₹12,000'   },
+  { icon: '✈️', label: 'Flights',       note: 'Per person · Air India / JAL',                inr: '₹70,000'   },
+  { icon: '🏨', label: 'Accommodation', note: 'Per person · hostel / capsule / Airbnb',       inr: '₹55,000'   },
+  { icon: '🍜', label: 'Food & Drink',  note: 'Per person · ~₹3,000/day · 13 days',          inr: '₹40,000'   },
+  { icon: '🚃', label: 'Transport',     note: 'Per person · JR Pass + IC card',               inr: '₹30,000'   },
+  { icon: '🎡', label: 'Activities',    note: 'Per person · Disney, TeamLab, temples',        inr: '₹25,000'   },
+  { icon: '🛍️', label: 'Shopping',      note: 'Per person · gifts, souvenirs, clothing',      inr: '₹20,000'   },
+  { icon: '🧮', label: 'Buffer',        note: 'Per person · SIM, emergencies, contingency',   inr: '₹10,000'   },
 ]
 
 const NEXT_ACTIONS = [
   { tag: 'Critical · Now',  title: 'Apply for Passport',           sub: 'Target July 2026 · Tatkal if needed'     },
   { tag: 'Set Alert',       title: 'Google Flights — BLR → NRT',   sub: 'Book window: Jan–Feb 2027'               },
-  { tag: 'Monthly',         title: '₹12,500 per person / month',   sub: 'Auto-transfer recommended'               },
+  { tag: 'Monthly',         title: '₹16,000 per person / month',   sub: 'Auto-transfer recommended'               },
   { tag: 'Book Ahead',      title: 'Shibuya Sky tickets',          sub: '2+ months ahead · sunset slot'           },
   { tag: 'Book Ahead',      title: 'teamLab Borderless Kyoto',     sub: '2+ months ahead · last time slot'        },
   { tag: 'Book Ahead',      title: 'Sagano Torokko Train',         sub: '3+ months ahead · right-side seats'      },
@@ -176,8 +176,8 @@ export default function Dashboard() {
           </p>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
             {[
-              { label: 'Total Budget',  value: '₹6,00,000', sub: 'combined · 3 pax' },
-              { label: 'Per Person',    value: '₹2,00,000', sub: 'target · all-in'  },
+              { label: 'Total Budget',  value: '₹7,50,000', sub: 'combined · 3 pax' },
+              { label: 'Per Person',    value: '₹2,50,000', sub: 'target · all-in'  },
               { label: 'Trip Length',   value: '13',        sub: 'days in Japan'    },
             ].map(s => (
               <div key={s.label} className="border border-[#D5D2CA] bg-white p-4">

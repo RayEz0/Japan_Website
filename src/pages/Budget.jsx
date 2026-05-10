@@ -5,7 +5,7 @@ const CATEGORIES = [
   {
     key:   'flights',
     label: 'Flights',
-    amount: 55000,
+    amount: 70000,
     note:  'Return airfare per person',
     color: '#6366F1',
     bg:    '#E0E7FF',
@@ -14,7 +14,7 @@ const CATEGORIES = [
   {
     key:   'accommodation',
     label: 'Accommodation',
-    amount: 40000,
+    amount: 55000,
     note:  '12 nights · hostel / capsule / Airbnb split',
     color: '#F59E0B',
     bg:    '#FEF3C7',
@@ -23,7 +23,7 @@ const CATEGORIES = [
   {
     key:   'food',
     label: 'Food & Drink',
-    amount: 30000,
+    amount: 40000,
     note:  'Meals, cafés, convenience stores',
     color: '#EF4444',
     bg:    '#FEF2F2',
@@ -32,7 +32,7 @@ const CATEGORIES = [
   {
     key:   'transport',
     label: 'Transport',
-    amount: 25000,
+    amount: 30000,
     note:  'JR Pass + Shinkansen + IC card top-ups',
     color: '#3B82F6',
     bg:    '#DBEAFE',
@@ -41,7 +41,7 @@ const CATEGORIES = [
   {
     key:   'activities',
     label: 'Activities',
-    amount: 20000,
+    amount: 25000,
     note:  'Disney, TeamLab, Shibuya Sky, temples',
     color: '#10B981',
     bg:    '#D1FAE5',
@@ -50,7 +50,7 @@ const CATEGORIES = [
   {
     key:   'shopping',
     label: 'Shopping',
-    amount: 18000,
+    amount: 20000,
     note:  'Gifts, souvenirs, clothing',
     color: '#EC4899',
     bg:    '#FCE7F3',
@@ -59,7 +59,7 @@ const CATEGORIES = [
   {
     key:   'misc',
     label: 'Misc & Buffer',
-    amount: 12000,
+    amount: 10000,
     note:  'SIM card, emergencies, contingency',
     color: '#8B5CF6',
     bg:    '#F3E8FF',
@@ -67,9 +67,9 @@ const CATEGORIES = [
   },
 ]
 
-const PER_PERSON = CATEGORIES.reduce((s, c) => s + c.amount, 0)   // 75,000
+const PER_PERSON = CATEGORIES.reduce((s, c) => s + c.amount, 0)   // 2,50,000
 const PEOPLE     = 3
-const GROUP      = PER_PERSON * PEOPLE                              // 2,25,000
+const GROUP      = PER_PERSON * PEOPLE                              // 7,50,000
 
 function fmt(n) { return '₹' + Number(n).toLocaleString('en-IN') }
 
@@ -151,7 +151,7 @@ export default function Budget() {
           </h1>
           <p className="text-[10px] text-white/55 mt-2 tracking-[0.8px]"
              style={{ fontFamily: "'JetBrains Mono', monospace" }}>
-            ₹2L–₹2.5L per person estimate
+            ₹2.5L per person estimate
           </p>
         </div>
       </div>
@@ -293,7 +293,7 @@ export default function Budget() {
               </p>
               <p className="text-[32px] font-light text-[#0C0C0C] leading-none"
                  style={{ fontFamily: "'Fraunces', serif" }}>
-                {fmt((18000 + 12000) * multiplier)}
+                {fmt((20000 + 10000) * multiplier)}
               </p>
               <p className="text-[8.5px] text-[#BBBBBB] mt-1"
                  style={{ fontFamily: "'JetBrains Mono', monospace" }}>
@@ -308,8 +308,8 @@ export default function Budget() {
                 Fixed vs Flexible
               </p>
               {[
-                { label: 'Fixed',    amount: (55000 + 40000 + 25000) * multiplier, note: 'Flights · Stay · Transport' },
-                { label: 'Flexible', amount: (30000 + 20000 + 18000 + 12000) * multiplier, note: 'Food · Activities · Shopping · Buffer' },
+                { label: 'Fixed',    amount: (70000 + 55000 + 30000) * multiplier, note: 'Flights · Stay · Transport' },
+                { label: 'Flexible', amount: (40000 + 25000 + 20000 + 10000) * multiplier, note: 'Food · Activities · Shopping · Buffer' },
               ].map(({ label, amount, note }) => {
                 const pct = Math.round((amount / (PER_PERSON * multiplier)) * 100)
                 return (
