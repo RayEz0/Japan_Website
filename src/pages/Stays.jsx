@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { OptimizedHeroImage } from '../components/OptimizedImage'
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 const CITIES = [
@@ -136,16 +137,16 @@ function CitySection({ city, statuses, onCycle }) {
       {/* City header */}
       <div className="flex flex-wrap items-baseline gap-4 mb-4 pb-3 border-b-[1.5px] border-[#0C0C0C]">
         <h2 className="text-[26px] font-semibold text-[#0C0C0C] leading-none"
-            style={{ fontFamily: "'Fraunces', serif" }}>
+            >
           {city.name}
         </h2>
         <span className="text-[9px] uppercase tracking-[0.8px] text-[#777]"
-              style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              >
           {city.nights} nights
         </span>
         {bookedOpt && (
           <span className="ml-auto text-[8.5px] uppercase tracking-[0.8px] px-2.5 py-1"
-                style={{ fontFamily: "'JetBrains Mono', monospace",
+                style={{ 
                          background: STATUS_STYLE.Booked.bg, color: STATUS_STYLE.Booked.text }}>
             ✓ Booked: {bookedOpt.name}
           </span>
@@ -170,14 +171,14 @@ function CitySection({ city, statuses, onCycle }) {
               <div className="flex items-center gap-2 mb-3">
                 <span
                   className="text-[7.5px] uppercase tracking-[1.2px] px-2 py-0.5"
-                  style={{ fontFamily: "'JetBrains Mono', monospace", background: tc.bg, color: tc.text }}
+                  style={{  background: tc.bg, color: tc.text }}
                 >
                   {TYPE_LABEL[opt.type]}
                 </span>
                 {opt.badge && (
                   <span
                     className="text-[7.5px] uppercase tracking-[1px] px-2 py-0.5"
-                    style={{ fontFamily: "'JetBrains Mono', monospace",
+                    style={{ 
                              background: '#FEF3C7', color: '#92400E' }}
                   >
                     {opt.badge}
@@ -187,20 +188,20 @@ function CitySection({ city, statuses, onCycle }) {
 
               {/* Name */}
               <h3 className="text-[16px] font-semibold text-[#0C0C0C] leading-snug mb-1"
-                  style={{ fontFamily: "'Fraunces', serif" }}>
+                  >
                 {opt.name}
               </h3>
 
               {/* Area */}
               <p className="text-[9px] text-[#777] mb-3"
-                 style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                 >
                 {opt.area}
               </p>
 
               {/* Price range */}
               <div className="mb-1">
-                <p className="text-[22px] font-light text-[#0C0C0C] leading-none"
-                   style={{ fontFamily: "'Fraunces', serif" }}>
+                <p className="type-num text-[22px] font-light leading-none text-[#0C0C0C] tabular-nums"
+                   >
                   {fmtJPY(opt.priceMin)}
                   <span className="text-[14px] text-[#777]">–{fmtJPY(opt.priceMax)}</span>
                 </p>
@@ -209,20 +210,20 @@ function CitySection({ city, statuses, onCycle }) {
               {/* Note (optional) */}
               {opt.note && (
                 <p className="text-[8.5px] text-[#B8321A] mb-3 italic"
-                   style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                   >
                   {opt.note}
                 </p>
               )}
 
               {/* Total trip cost for this city */}
               <div className="flex items-center justify-between mb-5 pb-4 border-b border-[#D5D2CA]">
-                <p className="text-[9px] text-[#777]"
-                   style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                <p className="type-meta"
+                   >
                   {city.nights} nights
                   {opt.priceType === 'person' ? ' · per person' : ' · group total'}
                 </p>
-                <p className="text-[12px] font-medium text-[#0C0C0C]"
-                   style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                <p className="type-num text-[12px] font-medium text-[#0C0C0C] tabular-nums"
+                   >
                   {fmtJPY(opt.priceMin * city.nights)}–{fmtJPY(opt.priceMax * city.nights)}
                 </p>
               </div>
@@ -231,7 +232,7 @@ function CitySection({ city, statuses, onCycle }) {
               <button
                 onClick={() => onCycle(city.key, opt.key)}
                 className="flex items-center justify-center gap-2 w-full px-3 py-1.5 text-[9px] uppercase tracking-[0.8px] transition-opacity hover:opacity-75"
-                style={{ fontFamily: "'JetBrains Mono', monospace",
+                style={{ 
                          background: st.bg, color: st.text }}
               >
                 <span className="w-1.5 h-1.5 rounded-full" style={{ background: st.dot }} />
@@ -275,14 +276,13 @@ export default function Stays() {
 
       {/* Hero */}
       <div className="relative h-[200px] lg:h-64 overflow-hidden flex items-end">
-        <div className="absolute inset-0 bg-cover bg-center"
-             style={{ backgroundImage: "url('https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=1400&q=70&auto=format&fit=crop')" }} />
+        <OptimizedHeroImage hero="stays" alt="" eager />
         <div className="absolute inset-0 bg-gradient-to-b from-black/15 to-black/70" />
         <div className="relative z-10 px-4 pb-5 lg:px-12 lg:pb-7 w-full">
           <p className="text-[9px] uppercase tracking-[1.8px] text-white/65 mb-1.5"
-             style={{ fontFamily: "'JetBrains Mono', monospace" }}>005 — ACCOMMODATION</p>
+             >005 — ACCOMMODATION</p>
           <h1 className="text-[32px] lg:text-[42px] font-bold text-white leading-none"
-              style={{ fontFamily: "'Fraunces', serif", letterSpacing: '-1px' }}>
+              style={{  letterSpacing: '-1px' }}>
             Where We <em className="not-italic" style={{ color: 'rgba(255,200,150,.95)' }}>Stay</em>
           </h1>
         </div>
@@ -293,10 +293,10 @@ export default function Stays() {
         {/* Summary strip */}
         <div className="flex flex-wrap items-center gap-4 lg:gap-8 border-[1.5px] border-[#0C0C0C] bg-white px-6 py-4 mb-6 lg:mb-8">
           <div>
-            <p className="text-[8px] uppercase tracking-[1.2px] text-[#777] mb-0.5"
-               style={{ fontFamily: "'JetBrains Mono', monospace" }}>Total Nights</p>
-            <p className="text-[36px] font-light text-[#0C0C0C] leading-none"
-               style={{ fontFamily: "'Fraunces', serif" }}>
+            <p className="type-label mb-0.5"
+               >Total Nights</p>
+            <p className="type-num text-[36px] font-light leading-none text-[#0C0C0C] tabular-nums"
+               >
               {totalNights}
             </p>
           </div>
@@ -305,12 +305,12 @@ export default function Stays() {
 
           {CITIES.map(c => (
             <div key={c.key}>
-              <p className="text-[8px] uppercase tracking-[1.2px] text-[#777] mb-0.5"
-                 style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              <p className="type-label mb-0.5"
+                 >
                 {c.name}
               </p>
-              <p className="text-[20px] font-light text-[#0C0C0C] leading-none"
-                 style={{ fontFamily: "'Fraunces', serif" }}>
+              <p className="type-num text-[20px] font-light leading-none text-[#0C0C0C] tabular-nums"
+                 >
                 {c.nights}
                 <span className="text-[12px] text-[#777]"> nights</span>
               </p>
@@ -320,26 +320,26 @@ export default function Stays() {
           <div className="hidden sm:block w-px h-12 bg-[#D5D2CA]" />
 
           <div>
-            <p className="text-[8px] uppercase tracking-[1.2px] text-[#777] mb-0.5"
-               style={{ fontFamily: "'JetBrains Mono', monospace" }}>Est. Group Range</p>
-            <p className="text-[12px] text-[#0C0C0C]"
-               style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+            <p className="type-label mb-0.5"
+               >Est. Group Range</p>
+            <p className="type-num text-[12px] font-medium text-[#0C0C0C] tabular-nums"
+               >
               {fmtJPY(groupMin)} – {fmtJPY(groupMax)}
             </p>
-            <p className="text-[8px] text-[#777] mt-0.5"
-               style={{ fontFamily: "'JetBrains Mono', monospace" }}>full trip · 3 people</p>
+            <p className="type-meta mt-0.5"
+               >full trip · 3 people</p>
           </div>
 
           <div className="ml-auto">
-            <p className="text-[8px] uppercase tracking-[1px] text-[#777] mb-1.5"
-               style={{ fontFamily: "'JetBrains Mono', monospace" }}>Status legend</p>
+            <p className="type-label mb-1.5"
+               >Status legend</p>
             <div className="flex items-center gap-3">
               {STATUSES.map(s => {
                 const st = STATUS_STYLE[s]
                 return (
                   <span key={s}
-                        className="flex items-center gap-1.5 text-[8.5px] px-2 py-1"
-                        style={{ fontFamily: "'JetBrains Mono', monospace",
+                        className="flex items-center gap-1.5 type-label px-2 py-1"
+                        style={{ 
                                  background: st.bg, color: st.text }}>
                     <span className="w-1.5 h-1.5 rounded-full" style={{ background: st.dot }} />
                     {s}
@@ -363,7 +363,7 @@ export default function Stays() {
         </div>
 
         <p className="text-[8.5px] text-[#BBBBBB] mt-8 text-center"
-           style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+           >
           Status saved locally · Click any badge to cycle · Prices in Japanese ¥
         </p>
       </div>

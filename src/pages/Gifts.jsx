@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../context/AuthContext'
 import { ACCENT_COLORS } from '../lib/users'
+import { OptimizedHeroImage } from '../components/OptimizedImage'
 
 // ── Constants ────────────────────────────────────────────────────────────────
 const PERSONS = [
@@ -23,10 +24,33 @@ const CAT_STYLE = {
   Other:      { bg: '#F1F5F9', text: '#334155' },
 }
 
+const RECOMMENDED_LOCATIONS = {
+  anime: 'Akihabara, Tokyo',
+  figure: 'Akihabara, Tokyo',
+  manga: 'Akihabara, Tokyo',
+  knife: 'Osaka - Sennichimae Doguyasuji',
+  matcha: 'Kyoto - Nishiki Market',
+  kitkat: 'Tokyo - Don Quijote',
+  skincare: 'Tokyo - Matsumoto Kiyoshi',
+  fragrance: 'Tokyo - Ginza',
+  stationery: 'Tokyo - Itoya Ginza',
+  yukata: 'Kyoto - Gion',
+  ceramic: 'Kyoto - Kiyomizu-zaka',
+  chopstick: 'Kyoto - Nishiki Market',
+  snack: 'Tokyo - Don Quijote',
+}
+
 function fmt(n) { return '₹' + Number(n).toLocaleString('en-IN') }
 
 function blankForm() {
-  return { name: '', price: '', category: 'Snacks' }
+  return { name: '', price: '', category: 'Snacks', location: '' }
+}
+
+function getRecommendedLocation(gift) {
+  if (gift.location) return gift.location
+  const haystack = `${gift.name ?? ''} ${gift.category ?? ''}`.toLowerCase()
+  const match = Object.entries(RECOMMENDED_LOCATIONS).find(([key]) => haystack.includes(key))
+  return match?.[1] ?? null
 }
 
 // ── Main page ─────────────────────────────────────────────────────────────────
@@ -42,9 +66,19 @@ export default function Gifts() {
   const [confirmId,     setConfirmId]     = useState(null)  // gift.id awaiting delete confirm
   const channelRef = useRef(null)
 
+  async function loadAll() {
+    const { data } = await supabase
+      .from('gifts')
+      .select('*')
+      .order('category')
+      .order('name')
+    setGifts(data ?? [])
+    setLoading(false)
+  }
+
   // ── Load + realtime ──────────────────────────────────────────────
   useEffect(() => {
-    loadAll()
+    void Promise.resolve().then(loadAll)
 
     channelRef.current = supabase
       .channel('gifts-realtime')
@@ -60,16 +94,6 @@ export default function Gifts() {
 
     return () => { if (channelRef.current) supabase.removeChannel(channelRef.current) }
   }, [])
-
-  async function loadAll() {
-    const { data } = await supabase
-      .from('gifts')
-      .select('*')
-      .order('category')
-      .order('name')
-    setGifts(data ?? [])
-    setLoading(false)
-  }
 
   // ── Toggle checked ───────────────────────────────────────────────
   async function handleToggle(gift) {
@@ -101,6 +125,7 @@ export default function Gifts() {
         name:      addForm.name.trim(),
         category:  addForm.category,
         est_price: addForm.price ? Number(addForm.price) : 0,
+        location:  addForm.location.trim() || null,
         checked:   false,
         is_custom: true,
       })
@@ -134,14 +159,13 @@ export default function Gifts() {
 
       {/* Hero */}
       <div className="relative h-[200px] lg:h-64 overflow-hidden flex items-end">
-        <div className="absolute inset-0 bg-cover bg-center"
-             style={{ backgroundImage: "url('https://images.unsplash.com/photo-1513884923432-2b3e1d12348e?w=1400&q=70&auto=format&fit=crop')" }} />
+        <OptimizedHeroImage hero="gifts" alt="" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/15 to-black/70" />
         <div className="relative z-10 px-4 pb-5 lg:px-12 lg:pb-7 w-full">
           <p className="text-[9px] uppercase tracking-[1.8px] text-white/65 mb-1.5"
-             style={{ fontFamily: "'JetBrains Mono', monospace" }}>006 — CHECKLIST</p>
+             >006 — CHECKLIST</p>
           <h1 className="text-[32px] lg:text-[42px] font-bold text-white leading-none"
-              style={{ fontFamily: "'Fraunces', serif", letterSpacing: '-1px' }}>
+              style={{  letterSpacing: '-1px' }}>
             Gifts &amp; <em className="not-italic" style={{ color: 'rgba(255,200,150,.95)' }}>Souvenirs</em>
           </h1>
         </div>
@@ -152,14 +176,14 @@ export default function Gifts() {
         {/* ── Add Gift form ── */}
         <div className="border-[1.5px] border-[#0C0C0C] bg-white p-5 mb-7">
           <p className="text-[8px] uppercase tracking-[1.2px] text-[#777] mb-4"
-             style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+             >
             Add Gift / Souvenir
           </p>
           <form onSubmit={handleAdd} className="flex flex-wrap items-end gap-3">
             {/* Name */}
             <div className="flex-1 min-w-[160px]">
               <label className="block text-[7.5px] uppercase tracking-[0.8px] text-[#777] mb-1.5"
-                     style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                     >
                 Item name *
               </label>
               <input
@@ -169,14 +193,28 @@ export default function Gifts() {
                 onChange={e => setAddForm(f => ({ ...f, name: e.target.value }))}
                 placeholder="e.g. Matcha Kit Kat box"
                 className="w-full border-0 border-b-2 border-[#D5D2CA] bg-transparent pb-1 text-[13px] text-[#0C0C0C] outline-none focus:border-[#0C0C0C] transition-colors"
-                style={{ fontFamily: "'Inter', sans-serif" }}
+                
+              />
+            </div>
+
+            {/* Location */}
+            <div className="flex-1 min-w-[140px]">
+              <label className="block text-[7.5px] uppercase tracking-[0.8px] text-[#777] mb-1.5">
+                Where to buy (optional)
+              </label>
+              <input
+                type="text"
+                value={addForm.location}
+                onChange={e => setAddForm(f => ({ ...f, location: e.target.value }))}
+                placeholder="e.g. Tokyo – Don Quijote"
+                className="w-full border-0 border-b-2 border-[#D5D2CA] bg-transparent pb-1 text-[13px] text-[#0C0C0C] outline-none focus:border-[#0C0C0C] transition-colors"
               />
             </div>
 
             {/* Est. price */}
             <div className="w-28">
               <label className="block text-[7.5px] uppercase tracking-[0.8px] text-[#777] mb-1.5"
-                     style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                     >
                 Est. price (₹)
               </label>
               <input
@@ -186,21 +224,21 @@ export default function Gifts() {
                 onChange={e => setAddForm(f => ({ ...f, price: e.target.value }))}
                 placeholder="0"
                 className="w-full border-0 border-b-2 border-[#D5D2CA] bg-transparent pb-1 text-[13px] text-[#0C0C0C] outline-none focus:border-[#0C0C0C] transition-colors"
-                style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                
               />
             </div>
 
             {/* Category */}
             <div className="w-36">
               <label className="block text-[7.5px] uppercase tracking-[0.8px] text-[#777] mb-1.5"
-                     style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                     >
                 Category
               </label>
               <select
                 value={addForm.category}
                 onChange={e => setAddForm(f => ({ ...f, category: e.target.value }))}
                 className="w-full border-0 border-b-2 border-[#D5D2CA] bg-transparent pb-1 text-[12px] text-[#0C0C0C] outline-none focus:border-[#0C0C0C] transition-colors appearance-none"
-                style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                
               >
                 {ADD_CATS.map(c => <option key={c}>{c}</option>)}
               </select>
@@ -211,7 +249,7 @@ export default function Gifts() {
               type="submit"
               disabled={addSubmitting}
               className="text-[9px] uppercase tracking-[1px] bg-[#0C0C0C] text-white px-5 py-2 hover:opacity-75 disabled:opacity-40 transition-opacity flex-shrink-0"
-              style={{ fontFamily: "'JetBrains Mono', monospace" }}
+              
             >
               {addSubmitting ? 'Adding…' : '+ Add'}
             </button>
@@ -221,10 +259,10 @@ export default function Gifts() {
         {/* Summary bar */}
         <div className="flex flex-wrap items-center gap-4 lg:gap-8 border-[1.5px] border-[#0C0C0C] bg-white px-6 py-4 mb-7">
           <div>
-            <p className="text-[8px] uppercase tracking-[1.2px] text-[#777] mb-0.5"
-               style={{ fontFamily: "'JetBrains Mono', monospace" }}>Checked Off</p>
-            <p className="text-[32px] font-light text-[#0C0C0C] leading-none"
-               style={{ fontFamily: "'Fraunces', serif" }}>
+            <p className="type-label mb-0.5"
+               >Checked Off</p>
+            <p className="type-num text-[32px] font-light leading-none text-[#0C0C0C] tabular-nums"
+               >
               {checkedCount}
               <span className="text-[16px] text-[#777]"> / {gifts.length}</span>
             </p>
@@ -233,10 +271,10 @@ export default function Gifts() {
           <div className="w-px h-12 bg-[#D5D2CA]" />
 
           <div>
-            <p className="text-[8px] uppercase tracking-[1.2px] text-[#777] mb-0.5"
-               style={{ fontFamily: "'JetBrains Mono', monospace" }}>Est. Total</p>
-            <p className="text-[32px] font-light text-[#0C0C0C] leading-none"
-               style={{ fontFamily: "'Fraunces', serif" }}>
+            <p className="type-label mb-0.5"
+               >Est. Total</p>
+            <p className="type-num text-[32px] font-light leading-none text-[#0C0C0C] tabular-nums"
+               >
               {fmt(totalEst)}
             </p>
           </div>
@@ -246,10 +284,10 @@ export default function Gifts() {
           {/* Progress */}
           <div className="flex-1 min-w-[120px]">
             <div className="flex justify-between mb-1.5">
-              <p className="text-[8px] uppercase tracking-[1px] text-[#777]"
-                 style={{ fontFamily: "'JetBrains Mono', monospace" }}>Progress</p>
-              <p className="text-[8px] text-[#777]"
-                 style={{ fontFamily: "'JetBrains Mono', monospace" }}>{progressPct}%</p>
+              <p className="type-label"
+                 >Progress</p>
+              <p className="type-meta"
+                 >{progressPct}%</p>
             </div>
             <div className="h-[3px] bg-[#E5E2DA]">
               <div
@@ -267,10 +305,10 @@ export default function Gifts() {
               return (
                 <div key={p.key} className="text-center">
                   <span className="block w-2 h-2 rounded-full mx-auto mb-1" style={{ background: ac.dot }} />
-                  <p className="text-[9px]" style={{ fontFamily: "'JetBrains Mono', monospace", color: ac.text }}>
+                  <p className="text-[9px]" style={{  color: ac.text }}>
                     {p.name}
                   </p>
-                  <p className="text-[16px] font-light" style={{ fontFamily: "'Fraunces', serif" }}>
+                  <p className="type-num text-[16px] font-light text-[#0C0C0C] leading-none tabular-nums" >
                     {count}
                   </p>
                 </div>
@@ -290,7 +328,7 @@ export default function Gifts() {
                   onClick={() => setFilter(cat)}
                   className="px-4 py-2 text-[9px] uppercase tracking-[0.8px] border-r border-[#D5D2CA] last:border-r-0 transition-colors"
                   style={{
-                    fontFamily: "'JetBrains Mono', monospace",
+                    
                     background: on ? '#0C0C0C' : 'transparent',
                     color:      on ? '#fff'    : '#777',
                   }}
@@ -305,14 +343,14 @@ export default function Gifts() {
         {/* Gift list */}
         {loading ? (
           <p className="text-[10px] text-[#777] py-12 text-center"
-             style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+             >
             Loading…
           </p>
         ) : (
           <div className="border-[1.5px] border-[#0C0C0C] bg-white overflow-hidden">
             {displayed.length === 0 && (
               <p className="text-[11px] text-[#777] py-8 text-center"
-                 style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                 >
                 No items in this category.
               </p>
             )}
@@ -322,6 +360,7 @@ export default function Gifts() {
               const checkerPerson = PERSONS.find(p => p.name === gift.checked_by)
               const checkerAc     = checkerPerson ? ACCENT_COLORS[checkerPerson.accent] : null
               const isConfirming  = confirmId === gift.id
+              const recommendedLocation = getRecommendedLocation(gift)
 
               return (
                 <div
@@ -354,16 +393,21 @@ export default function Gifts() {
                     <p
                       className="text-[14px] font-medium leading-tight"
                       style={{
-                        fontFamily:     "'Inter', sans-serif",
+                        
                         color:          gift.checked ? '#999' : '#0C0C0C',
                         textDecoration: gift.checked ? 'line-through' : 'none',
                       }}
                     >
                       {gift.name}
+                      {recommendedLocation && (
+                        <span className="text-[#777] font-normal ml-1.5">
+                          ({recommendedLocation})
+                        </span>
+                      )}
                     </p>
                     {gift.checked && gift.checked_by && (
                       <p className="text-[9px] mt-0.5 text-[#777]"
-                         style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                         >
                         Picked by{' '}
                         <span style={{ color: checkerAc?.text ?? '#0C0C0C' }}>
                           {gift.checked_by}
@@ -375,7 +419,7 @@ export default function Gifts() {
                   {/* Category badge */}
                   <span
                     className="text-[8px] uppercase tracking-[0.8px] px-2 py-1 flex-shrink-0"
-                    style={{ fontFamily: "'JetBrains Mono', monospace",
+                    style={{ 
                              background: cs.bg, color: cs.text }}
                   >
                     {gift.category}
@@ -383,7 +427,7 @@ export default function Gifts() {
 
                   {/* Est. price */}
                   <p className="text-[13px] font-light text-[#777] flex-shrink-0 min-w-[64px] text-right"
-                     style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                     >
                     {fmt(gift.est_price)}
                   </p>
 
@@ -392,7 +436,7 @@ export default function Gifts() {
                     <div className="flex-shrink-0 ml-1">
                       {isConfirming ? (
                         <span className="flex items-center gap-1.5 text-[8.5px]"
-                              style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                              >
                           <span className="text-[#B8321A]">Sure?</span>
                           <button
                             onClick={() => handleDelete(gift)}
@@ -425,7 +469,7 @@ export default function Gifts() {
         )}
 
         <p className="text-[8.5px] text-[#BBBBBB] mt-4 text-center"
-           style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+           >
           Click any item to check / uncheck · Syncs in real time across all users
         </p>
       </div>

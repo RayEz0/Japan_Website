@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence, useAnimationControls } from 'framer-motion'
 import { supabase } from '../lib/supabaseClient'
+import { OptimizedHeroImage } from '../components/OptimizedImage'
 
 export default function Login() {
   const [email,    setEmail]    = useState('')
@@ -41,10 +42,7 @@ export default function Login() {
         transition={{ duration: 0.7 }}
         className="relative flex-shrink-0 w-full h-48 md:h-auto md:w-1/2 flex items-end overflow-hidden"
       >
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1492571350019-22de08371fd3?w=1400&q=80')" }}
-        />
+        <OptimizedHeroImage hero="login" alt="" eager />
         {/* gradient: lighter top, heavy bottom so text is readable */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/35 to-black/80" />
 
@@ -54,7 +52,7 @@ export default function Login() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.5 }}
             className="text-[9px] uppercase tracking-[2px] text-white/50 mb-4"
-            style={{ fontFamily: "'JetBrains Mono', monospace" }}
+            
           >
             Private · Invite Only
           </motion.p>
@@ -65,7 +63,7 @@ export default function Login() {
             transition={{ delay: 0.4, duration: 0.55 }}
             className="font-bold text-white leading-none mb-4"
             style={{
-              fontFamily: "'Fraunces', serif",
+              
               fontSize: 'clamp(44px, 7vw, 72px)',
               letterSpacing: '-2.5px',
             }}
@@ -78,7 +76,7 @@ export default function Login() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.5 }}
             className="text-[10px] text-white/55 leading-relaxed"
-            style={{ fontFamily: "'JetBrains Mono', monospace" }}
+            
           >
             Nov 23 – Dec 5, 2027<br />
             Tokyo · Fuji · Kyoto · Osaka
@@ -100,20 +98,20 @@ export default function Login() {
             <div className="w-9 h-9 bg-[#0C0C0C] flex items-center justify-center mb-5">
               <span
                 className="text-white text-xs font-semibold"
-                style={{ fontFamily: "'Fraunces', serif" }}
+                
               >
                 JP
               </span>
             </div>
             <h2
               className="text-[30px] font-bold text-[#0C0C0C] leading-tight"
-              style={{ fontFamily: "'Fraunces', serif" }}
+              
             >
               Welcome back.
             </h2>
             <p
               className="text-[9px] uppercase tracking-[1.4px] text-[#777] mt-1.5"
-              style={{ fontFamily: "'JetBrains Mono', monospace" }}
+              
             >
               Sign in to continue
             </p>
@@ -127,7 +125,7 @@ export default function Login() {
                 <label
                   htmlFor="email"
                   className="block text-[8.5px] uppercase tracking-[1.2px] text-[#777] mb-2"
-                  style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                  
                 >
                   Email
                 </label>
@@ -140,7 +138,7 @@ export default function Login() {
                   onChange={e => setEmail(e.target.value)}
                   placeholder="you@example.com"
                   className="w-full border-0 border-b-2 border-[#D5D2CA] bg-transparent pb-2 text-[14px] text-[#0C0C0C] outline-none transition-colors focus:border-[#0C0C0C] placeholder:text-[#C5C2BA]"
-                  style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                  
                 />
               </div>
 
@@ -148,7 +146,7 @@ export default function Login() {
                 <label
                   htmlFor="password"
                   className="block text-[8.5px] uppercase tracking-[1.2px] text-[#777] mb-2"
-                  style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                  
                 >
                   Password
                 </label>
@@ -161,7 +159,7 @@ export default function Login() {
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
                   className="w-full border-0 border-b-2 border-[#D5D2CA] bg-transparent pb-2 text-[14px] text-[#0C0C0C] outline-none transition-colors focus:border-[#0C0C0C] placeholder:text-[#C5C2BA]"
-                  style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                  
                 />
               </div>
 
@@ -174,7 +172,7 @@ export default function Login() {
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
                     className="text-[10px] text-[#B8321A] mb-5 -mt-3"
-                    style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                    
                   >
                     {error}
                   </motion.p>
@@ -188,7 +186,7 @@ export default function Login() {
                 whileHover={{ opacity: 0.78 }}
                 whileTap={{ scale: 0.985 }}
                 className="w-full bg-[#0C0C0C] text-white text-[10px] uppercase tracking-[1.5px] py-3.5 disabled:opacity-40"
-                style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                
               >
                 {loading ? 'Signing in…' : 'Sign In →'}
               </motion.button>
@@ -198,7 +196,7 @@ export default function Login() {
 
           <p
             className="text-center text-[8.5px] uppercase tracking-[1.2px] text-[#BBBBBB] mt-8"
-            style={{ fontFamily: "'JetBrains Mono', monospace" }}
+            
           >
             Invite-only · No public signup
           </p>

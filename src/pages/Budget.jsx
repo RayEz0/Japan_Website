@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { OptimizedHeroImage } from '../components/OptimizedImage'
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 const CATEGORIES = [
@@ -88,23 +89,23 @@ function BarRow({ cat, multiplier, maxAmount, animate }) {
                 style={{ background: cat.color }} />
           <div>
             <p className="text-[14px] font-medium text-[#0C0C0C]"
-               style={{ fontFamily: "'Inter', sans-serif" }}>
+               >
               {cat.label}
             </p>
             <p className="text-[9px] text-[#BBBBBB] mt-0.5"
-               style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+               >
               {cat.note}
             </p>
           </div>
         </div>
 
         <div className="text-right flex-shrink-0 ml-6">
-          <p className="text-[22px] font-light text-[#0C0C0C] leading-none"
-             style={{ fontFamily: "'Fraunces', serif" }}>
+          <p className="type-num text-[22px] font-light text-[#0C0C0C] leading-none tabular-nums"
+             >
             {fmt(amount)}
           </p>
-          <p className="text-[8.5px] text-[#BBBBBB] mt-0.5"
-             style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+          <p className="type-meta mt-0.5"
+             >
             {pct}% of total
           </p>
         </div>
@@ -139,18 +140,17 @@ export default function Budget() {
 
       {/* Hero */}
       <div className="relative h-[200px] lg:h-64 overflow-hidden flex items-end">
-        <div className="absolute inset-0 bg-cover bg-center"
-             style={{ backgroundImage: "url('https://images.unsplash.com/photo-1554224154-22dec7ec8818?w=1400&q=70&auto=format&fit=crop')" }} />
+        <OptimizedHeroImage hero="budget" alt="" eager />
         <div className="absolute inset-0 bg-gradient-to-b from-black/15 to-black/70" />
         <div className="relative z-10 px-4 pb-5 lg:px-12 lg:pb-7 w-full">
           <p className="text-[9px] uppercase tracking-[1.8px] text-white/65 mb-1.5"
-             style={{ fontFamily: "'JetBrains Mono', monospace" }}>003 — FINANCES</p>
+             >003 — FINANCES</p>
           <h1 className="text-[32px] lg:text-[42px] font-bold text-white leading-none"
-              style={{ fontFamily: "'Fraunces', serif", letterSpacing: '-1px' }}>
+              style={{  letterSpacing: '-1px' }}>
             Trip <em className="not-italic" style={{ color: 'rgba(255,200,150,.95)' }}>Budget</em>
           </h1>
           <p className="text-[10px] text-white/55 mt-2 tracking-[0.8px]"
-             style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+             >
             ₹2.5L per person estimate
           </p>
         </div>
@@ -163,17 +163,17 @@ export default function Budget() {
 
           {/* Total card */}
           <div className="flex-1 border-[1.5px] border-[#0C0C0C] bg-white px-8 py-6">
-            <p className="text-[8px] uppercase tracking-[1.4px] text-[#777] mb-1"
-               style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+            <p className="type-label mb-1"
+               >
               {mode === 'person' ? 'Per Person · Target' : `Group Total · ${PEOPLE} People`}
             </p>
-            <p className="text-[56px] font-light text-[#0C0C0C] leading-none"
-               style={{ fontFamily: "'Fraunces', serif" }}>
+            <p className="type-num text-[56px] font-light text-[#0C0C0C] leading-none tabular-nums"
+               >
               {fmt(total)}
             </p>
             {mode === 'person' && (
-              <p className="text-[9px] text-[#BBBBBB] mt-2"
-                 style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              <p className="type-meta mt-2"
+                 >
                 Group total: {fmt(GROUP)} across all three
               </p>
             )}
@@ -194,7 +194,7 @@ export default function Budget() {
                     onClick={() => setMode(key)}
                     className="px-5 py-2.5 text-[9.5px] uppercase tracking-[0.8px] transition-colors border-r border-[#D5D2CA] last:border-r-0"
                     style={{
-                      fontFamily: "'JetBrains Mono', monospace",
+                      
                       background: on ? '#0C0C0C' : 'transparent',
                       color:      on ? '#fff'    : '#777',
                     }}
@@ -212,7 +212,7 @@ export default function Budget() {
                   <span className="w-2 h-2 rounded-full flex-shrink-0"
                         style={{ background: cat.color }} />
                   <span className="text-[8.5px] text-[#777]"
-                        style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                        >
                     {cat.label}
                   </span>
                 </div>
@@ -241,8 +241,8 @@ export default function Budget() {
 
             {/* Biggest spend */}
             <div className="border border-[#D5D2CA] bg-white p-5">
-              <p className="text-[8px] uppercase tracking-[1px] text-[#777] mb-3"
-                 style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              <p className="type-label mb-3"
+                 >
                 Largest Category
               </p>
               {(() => {
@@ -250,18 +250,18 @@ export default function Budget() {
                 return (
                   <>
                     <span
-                      className="inline-block text-[8px] uppercase tracking-[0.8px] px-2 py-1 mb-2"
-                      style={{ fontFamily: "'JetBrains Mono', monospace",
+                      className="inline-block type-label px-2 py-1 mb-2"
+                      style={{ 
                                background: top.bg, color: top.text }}
                     >
                       {top.label}
                     </span>
-                    <p className="text-[32px] font-light text-[#0C0C0C] leading-none"
-                       style={{ fontFamily: "'Fraunces', serif" }}>
+                    <p className="type-num text-[32px] font-light text-[#0C0C0C] leading-none tabular-nums"
+                       >
                       {fmt(top.amount * multiplier)}
                     </p>
-                    <p className="text-[8.5px] text-[#BBBBBB] mt-1"
-                       style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                    <p className="type-meta mt-1"
+                       >
                       {Math.round((top.amount / PER_PERSON) * 100)}% of per-person budget
                     </p>
                   </>
@@ -271,40 +271,40 @@ export default function Budget() {
 
             {/* Daily average */}
             <div className="border border-[#D5D2CA] bg-white p-5">
-              <p className="text-[8px] uppercase tracking-[1px] text-[#777] mb-3"
-                 style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              <p className="type-label mb-3"
+                 >
                 Daily Spend (13 days)
               </p>
-              <p className="text-[32px] font-light text-[#0C0C0C] leading-none"
-                 style={{ fontFamily: "'Fraunces', serif" }}>
+              <p className="type-num text-[32px] font-light text-[#0C0C0C] leading-none tabular-nums"
+                 >
                 {fmt(Math.round((PER_PERSON * multiplier) / 13))}
               </p>
-              <p className="text-[8.5px] text-[#BBBBBB] mt-1"
-                 style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              <p className="type-meta mt-1"
+                 >
                 {mode === 'person' ? 'per person' : 'across the group'} / day
               </p>
             </div>
 
             {/* Discretionary (Shopping + Misc) */}
             <div className="border border-[#D5D2CA] bg-white p-5">
-              <p className="text-[8px] uppercase tracking-[1px] text-[#777] mb-3"
-                 style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              <p className="type-label mb-3"
+                 >
                 Discretionary
               </p>
-              <p className="text-[32px] font-light text-[#0C0C0C] leading-none"
-                 style={{ fontFamily: "'Fraunces', serif" }}>
+              <p className="type-num text-[32px] font-light text-[#0C0C0C] leading-none tabular-nums"
+                 >
                 {fmt((20000 + 10000) * multiplier)}
               </p>
-              <p className="text-[8.5px] text-[#BBBBBB] mt-1"
-                 style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              <p className="type-meta mt-1"
+                 >
                 Shopping + misc buffer
               </p>
             </div>
 
             {/* Fixed vs flexible split */}
             <div className="border border-[#D5D2CA] bg-white p-5">
-              <p className="text-[8px] uppercase tracking-[1px] text-[#777] mb-4"
-                 style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              <p className="type-label mb-4"
+                 >
                 Fixed vs Flexible
               </p>
               {[
@@ -315,12 +315,12 @@ export default function Budget() {
                 return (
                   <div key={label} className="mb-3 last:mb-0">
                     <div className="flex justify-between items-baseline mb-1">
-                      <span className="text-[9px] uppercase tracking-[0.5px] text-[#777]"
-                            style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                      <span className="type-label"
+                            >
                         {label}
                       </span>
-                      <span className="text-[13px] text-[#0C0C0C]"
-                            style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                      <span className="type-num text-[13px] text-[#0C0C0C] tabular-nums"
+                            >
                         {fmt(amount)}
                       </span>
                     </div>
@@ -330,8 +330,8 @@ export default function Budget() {
                         style={{ width: `${pct}%`, transition: 'width 0.6s ease' }}
                       />
                     </div>
-                    <p className="text-[8px] text-[#BBBBBB] mt-0.5"
-                       style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                    <p className="type-meta mt-0.5"
+                       >
                       {note}
                     </p>
                   </div>
@@ -343,7 +343,7 @@ export default function Budget() {
         </div>
 
         <p className="text-[8.5px] text-[#BBBBBB] mt-8 text-center"
-           style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+           >
           All figures are estimates · Actual costs tracked in Expense Log
         </p>
       </div>

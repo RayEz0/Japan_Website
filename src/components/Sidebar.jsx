@@ -111,6 +111,7 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
   const navigate   = useNavigate()
   const accent     = profile ? ACCENT_COLORS[profile.accent] : ACCENT_COLORS.amber
   const isDesktop  = useIsDesktop()
+  const [showSignOut, setShowSignOut] = useState(false)
 
   // Desktop: animate width 260→0. Mobile: animate x (translate).
   const xPos          = isDesktop ? 0 : isOpen ? 0 : -SIDEBAR_W
@@ -151,12 +152,8 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
             onClick={onToggleCollapse}
-            className="fixed top-[72px] left-0 z-[60] w-8 h-10 bg-white flex items-center justify-center text-[#777] hover:text-[#0C0C0C] transition-colors"
-            style={{
-              borderRight:  '1.5px solid #0C0C0C',
-              borderTop:    '1px solid #D5D2CA',
-              borderBottom: '1px solid #D5D2CA',
-            }}
+            className="glass-menu-button text-[#777] hover:text-[#0C0C0C]"
+            style={{ top: '88px' }}
             aria-label="Open sidebar"
           >
             <HamburgerIcon />
@@ -169,7 +166,7 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
         initial={false}
         animate={{ x: xPos, width: animatedWidth }}
         transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-        className="fixed top-0 left-0 bottom-0 flex flex-col z-[60]"
+        className="app-sidebar fixed top-0 left-0 bottom-0 flex flex-col z-[60]"
         style={{
           background:  '#FFFFFF',
           borderRight: '1.5px solid #0C0C0C',
@@ -184,7 +181,7 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
         >
           <span
             className="text-[8px] uppercase tracking-[1.2px] text-[#BBBBBB]"
-            style={{ fontFamily: "'JetBrains Mono', monospace", whiteSpace: 'nowrap' }}
+            style={{  whiteSpace: 'nowrap' }}
           >
             JP / 2027
           </span>
@@ -202,7 +199,7 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
           onClick={onClose}
           className="lg:hidden absolute top-3 right-3 w-9 h-9 flex items-center justify-center text-[#777] hover:text-[#0C0C0C] transition-colors text-base"
           aria-label="Close menu"
-          style={{ fontFamily: "'JetBrains Mono', monospace" }}
+          
         >
           ✕
         </button>
@@ -214,18 +211,18 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
         >
           <div className="w-8 h-8 flex items-center justify-center flex-shrink-0"
                style={{ background: '#0C0C0C' }}>
-            <span className="text-white text-xs font-semibold tracking-wide"
-                  style={{ fontFamily: "'Fraunces', serif" }}>
+            <span className="sidebar-brand-mark text-white text-xs font-semibold tracking-wide"
+                  >
               JP
             </span>
           </div>
-          <div style={{ whiteSpace: 'nowrap' }}>
-            <div className="text-[17px] font-semibold text-[#0C0C0C] leading-none"
-                 style={{ fontFamily: "'Fraunces', serif" }}>
+          <div style={{ whiteSpace: 'nowrap', minWidth: 0 }}>
+            <div className="sb-brand-name text-[#0C0C0C]"
+                 >
               Japan 2027
             </div>
-            <div className="text-[8.5px] text-[#777] tracking-[0.8px] mt-1 uppercase"
-                 style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+            <div className="sb-brand-meta text-[#777] mt-1 uppercase"
+                 >
               Nov 23–Dec 5 · 3 Travellers
             </div>
           </div>
@@ -239,7 +236,7 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
               style={{
                 background:  accent.bg,
                 color:       accent.text,
-                fontFamily:  "'JetBrains Mono', monospace",
+                
                 whiteSpace:  'nowrap',
               }}
             >
@@ -259,6 +256,7 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
               onClick={handleNavClick}
               className={({ isActive }) =>
                 [
+                  'sidebar-nav-item',
                   'flex items-center h-[50px] w-full text-left text-[12.5px] font-medium transition-colors duration-150 relative',
                   isActive
                     ? 'text-[#0C0C0C] bg-[#F5F4F0]'
@@ -277,7 +275,7 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
                   <span className="w-[58px] h-[50px] flex items-center justify-center text-base flex-shrink-0">
                     {item.icon}
                   </span>
-                  <span className="tracking-[0.1px]" style={{ whiteSpace: 'nowrap' }}>
+                  <span className="sb-lbl tracking-[0.1px]" style={{ whiteSpace: 'nowrap' }}>
                     {item.label}
                   </span>
                 </>
@@ -289,9 +287,9 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
         {/* Sign out */}
         <div className="flex-shrink-0" style={{ borderTop: '1px solid #D5D2CA' }}>
           <button
-            onClick={handleSignOut}
+            onClick={() => setShowSignOut(true)}
             className="flex items-center h-[50px] w-full text-[11px] font-medium text-[#777] hover:text-[#B8321A] transition-colors duration-150"
-            style={{ fontFamily: "'JetBrains Mono', monospace" }}
+            
           >
             <span className="w-[58px] h-[50px] flex items-center justify-center text-base flex-shrink-0">
               <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -306,6 +304,47 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
           </button>
         </div>
       </motion.aside>
+
+      {/* Sign Out Confirmation Modal */}
+      <AnimatePresence>
+        {showSignOut && (
+          <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+              onClick={() => setShowSignOut(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="relative w-full max-w-[320px] bg-[#FDFCF9] border border-[#D5D2CA] p-6 shadow-2xl rounded-lg"
+            >
+              <p className="text-[14px] font-medium text-[#0C0C0C] text-center mb-6 leading-snug">
+                Are you sure you want to sign out?
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowSignOut(false)}
+                  className="flex-1 h-10 rounded-md border border-[#D5D2CA] text-[11px] font-medium text-[#777] hover:text-[#0C0C0C] hover:bg-[#F5F4F0] transition-colors uppercase tracking-[0.5px]"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSignOut}
+                  className="flex-1 h-10 rounded-md bg-[#0C0C0C] text-[11px] font-medium text-white hover:bg-[#B8321A] transition-colors uppercase tracking-[0.5px]"
+                >
+                  Sign Out
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </>
   )
 }

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../context/AuthContext'
 import { ACCENT_COLORS } from '../lib/users'
+import { OptimizedHeroImage } from '../components/OptimizedImage'
 
 // ── Constants ────────────────────────────────────────────────────────────────
 const PERSONS = [
@@ -76,11 +77,11 @@ function ExpenseModal({ expense, onClose }) {
     >
       <div className="bg-white border-[1.5px] border-[#0C0C0C] p-8 w-full max-w-md mx-4">
         <h2 className="text-[22px] font-bold text-[#0C0C0C] leading-tight mb-1"
-            style={{ fontFamily: "'Fraunces', serif" }}>
+            >
           {expense.name}
         </h2>
-        <p className="text-[9px] uppercase tracking-[0.8px] text-[#777] mb-5"
-           style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+        <p className="type-label mb-5"
+           >
           {fmt(expense.amount)} · {expense.category}
           {expense.date ? ` · ${expense.date}` : ''}
           {` · paid by ${cap(expense.paid_by)}`}
@@ -88,13 +89,13 @@ function ExpenseModal({ expense, onClose }) {
 
         {isPersonal ? (
           <p className="text-[11px] text-[#777] italic"
-             style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+             >
             Personal expense — not included in group balance
           </p>
         ) : (
           <>
-            <p className="text-[8px] uppercase tracking-[1px] text-[#777] mb-3"
-               style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+            <p className="type-label mb-3"
+               >
               Split Breakdown
             </p>
             {PERSONS.filter(({ key }) => key === expense.paid_by || split.includes(key))
@@ -109,17 +110,17 @@ function ExpenseModal({ expense, onClose }) {
                 return (
                   <div key={key} className="flex justify-between items-center py-2.5 border-b border-[#D5D2CA] last:border-0">
                     <span className="text-[13px] text-[#0C0C0C]"
-                          style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                          >
                       {name}
                       {isPaid && (
-                        <span className="ml-2 text-[7.5px] text-[#B8321A] uppercase tracking-wide"
-                              style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                        <span className="ml-2 type-label text-[#B8321A]"
+                              >
                           [paid]
                         </span>
                       )}
                     </span>
-                    <span className={`text-[13px] ${cls}`}
-                          style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                    <span className={`type-num text-[13px] ${cls} tabular-nums`}
+                          >
                       {sign}{fmt(Math.abs(net))}
                     </span>
                   </div>
@@ -137,8 +138,8 @@ function ExpenseModal({ expense, onClose }) {
         <div className="mt-6 flex justify-end">
           <button
             onClick={onClose}
-            className="text-[10px] uppercase tracking-[0.8px] border-[1.5px] border-[#D5D2CA] text-[#777] px-5 py-2 hover:border-[#0C0C0C] hover:text-[#0C0C0C] transition-colors"
-            style={{ fontFamily: "'JetBrains Mono', monospace" }}
+            className="type-label border-[1.5px] border-[#D5D2CA] text-[#777] px-5 py-2 hover:border-[#0C0C0C] hover:text-[#0C0C0C] transition-colors"
+            
           >
             Close
           </button>
@@ -258,14 +259,13 @@ export default function Expenses() {
 
       {/* Hero */}
       <div className="relative h-[200px] lg:h-64 overflow-hidden flex items-end">
-        <div className="absolute inset-0 bg-cover bg-center"
-             style={{ backgroundImage: "url('https://images.unsplash.com/photo-1554224154-22dec7ec8818?w=1400&q=70&auto=format&fit=crop')" }} />
+        <OptimizedHeroImage hero="expenses" alt="" eager />
         <div className="absolute inset-0 bg-gradient-to-b from-black/15 to-black/70" />
         <div className="relative z-10 px-4 pb-5 lg:px-12 lg:pb-7 w-full">
           <p className="text-[9px] uppercase tracking-[1.8px] text-white/65 mb-1.5"
-             style={{ fontFamily: "'JetBrains Mono', monospace" }}>003C — EXPENSE LOG</p>
+             >003C — EXPENSE LOG</p>
           <h1 className="text-[32px] lg:text-[42px] font-bold text-white leading-none"
-              style={{ fontFamily: "'Fraunces', serif", letterSpacing: '-1px' }}>
+              style={{  letterSpacing: '-1px' }}>
             Expense <em className="not-italic" style={{ color: 'rgba(255,200,150,.95)' }}>Log</em>
           </h1>
         </div>
@@ -275,10 +275,10 @@ export default function Expenses() {
 
         {/* Total bar */}
         <div className="flex items-center justify-between border-[1.5px] border-[#0C0C0C] bg-white px-6 py-4 mb-7">
-          <p className="text-[9px] uppercase tracking-[1.2px] text-[#777]"
-             style={{ fontFamily: "'JetBrains Mono', monospace" }}>Total Spent</p>
-          <p className="text-[32px] font-light text-[#0C0C0C]"
-             style={{ fontFamily: "'Fraunces', serif" }}>
+          <p className="type-label"
+             >Total Spent</p>
+          <p className="type-num text-[32px] font-light text-[#0C0C0C] leading-none tabular-nums"
+             >
             {fmt(totalSpent)}
           </p>
         </div>
@@ -291,7 +291,7 @@ export default function Expenses() {
             {/* Add form */}
             <div className="border-[1.5px] border-[#0C0C0C] bg-white p-6 mb-7">
               <h2 className="text-[20px] font-semibold text-[#0C0C0C] mb-5"
-                  style={{ fontFamily: "'Fraunces', serif" }}>
+                  >
                 Add Expense
               </h2>
               <form onSubmit={handleAdd}>
@@ -299,7 +299,7 @@ export default function Expenses() {
                   {/* Name */}
                   <div className="col-span-2">
                     <label className="block text-[8px] uppercase tracking-[1px] text-[#777] mb-1.5"
-                           style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                           >
                       Item / Title
                     </label>
                     <input
@@ -307,13 +307,13 @@ export default function Expenses() {
                       onChange={e => setField('name', e.target.value)}
                       placeholder="e.g. Ramen Dinner"
                       className="w-full border-0 border-b-2 border-[#D5D2CA] bg-transparent pb-1.5 text-[13px] text-[#0C0C0C] outline-none focus:border-[#0C0C0C] transition-colors"
-                      style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                      
                     />
                   </div>
                   {/* Amount */}
                   <div>
                     <label className="block text-[8px] uppercase tracking-[1px] text-[#777] mb-1.5"
-                           style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                           >
                       Amount (₹)
                     </label>
                     <input
@@ -321,19 +321,19 @@ export default function Expenses() {
                       onChange={e => setField('amount', e.target.value)}
                       placeholder="0"
                       className="w-full border-0 border-b-2 border-[#D5D2CA] bg-transparent pb-1.5 text-[13px] text-[#0C0C0C] outline-none focus:border-[#0C0C0C] transition-colors"
-                      style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                      
                     />
                   </div>
                   {/* Category */}
                   <div>
                     <label className="block text-[8px] uppercase tracking-[1px] text-[#777] mb-1.5"
-                           style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                           >
                       Category
                     </label>
                     <select
                       value={form.category} onChange={e => setField('category', e.target.value)}
                       className="w-full border-0 border-b-2 border-[#D5D2CA] bg-transparent pb-1.5 text-[13px] text-[#0C0C0C] outline-none focus:border-[#0C0C0C] transition-colors appearance-none"
-                      style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                      
                     >
                       {CATEGORIES.map(c => <option key={c}>{c}</option>)}
                     </select>
@@ -341,26 +341,26 @@ export default function Expenses() {
                   {/* Date */}
                   <div>
                     <label className="block text-[8px] uppercase tracking-[1px] text-[#777] mb-1.5"
-                           style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                           >
                       Date
                     </label>
                     <input
                       type="date" value={form.date}
                       onChange={e => setField('date', e.target.value)}
                       className="w-full border-0 border-b-2 border-[#D5D2CA] bg-transparent pb-1.5 text-[13px] text-[#0C0C0C] outline-none focus:border-[#0C0C0C] transition-colors"
-                      style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                      
                     />
                   </div>
                   {/* Paid by */}
                   <div>
                     <label className="block text-[8px] uppercase tracking-[1px] text-[#777] mb-1.5"
-                           style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                           >
                       Paid By
                     </label>
                     <select
                       value={form.paid_by} onChange={e => setField('paid_by', e.target.value)}
                       className="w-full border-0 border-b-2 border-[#D5D2CA] bg-transparent pb-1.5 text-[13px] text-[#0C0C0C] outline-none focus:border-[#0C0C0C] transition-colors appearance-none"
-                      style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                      
                     >
                       {PERSONS.map(p => <option key={p.key} value={p.key}>{p.name}</option>)}
                     </select>
@@ -370,7 +370,7 @@ export default function Expenses() {
                 {/* Notes */}
                 <div className="mb-4">
                   <label className="block text-[8px] uppercase tracking-[1px] text-[#777] mb-1.5"
-                         style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                         >
                     Notes (optional)
                   </label>
                   <input
@@ -378,14 +378,14 @@ export default function Expenses() {
                     onChange={e => setField('notes', e.target.value)}
                     placeholder="e.g. Dotonbori night"
                     className="w-full border-0 border-b-2 border-[#D5D2CA] bg-transparent pb-1.5 text-[13px] text-[#0C0C0C] outline-none focus:border-[#0C0C0C] transition-colors"
-                    style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                    
                   />
                 </div>
 
                 {/* Split between */}
                 <div className="flex items-center gap-4 mb-5">
                   <p className="text-[8px] uppercase tracking-[1px] text-[#777] flex-shrink-0"
-                     style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                     >
                     Split Between
                   </p>
                   <div className="flex gap-4">
@@ -396,7 +396,7 @@ export default function Expenses() {
                         <label
                           key={p.key}
                           className="flex items-center gap-2 cursor-pointer text-[12px]"
-                          style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                          
                         >
                           <input
                             type="checkbox" checked={checked}
@@ -415,7 +415,7 @@ export default function Expenses() {
                   </div>
                   {form.split_between.length === 1 && form.split_between[0] === form.paid_by && (
                     <span className="text-[8.5px] text-[#777] italic ml-2"
-                          style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                          >
                       → personal expense
                     </span>
                   )}
@@ -424,7 +424,7 @@ export default function Expenses() {
                 <button
                   type="submit" disabled={submitting}
                   className="text-[10px] uppercase tracking-[1px] bg-[#0C0C0C] text-white px-7 py-2.5 hover:opacity-75 disabled:opacity-40 transition-opacity"
-                  style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                  
                 >
                   {submitting ? 'Adding…' : '+ Add Expense'}
                 </button>
@@ -434,13 +434,13 @@ export default function Expenses() {
             {/* Filter bar */}
             <div className="flex flex-wrap items-center gap-3 mb-4">
               <p className="text-[8.5px] uppercase tracking-[0.8px] text-[#777] flex-shrink-0"
-                 style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                 >
                 Filter:
               </p>
               <select
                 value={filterCat} onChange={e => setFilterCat(e.target.value)}
                 className="border border-[#D5D2CA] bg-white text-[11px] text-[#0C0C0C] px-3 py-1.5 outline-none appearance-none hover:border-[#0C0C0C] transition-colors"
-                style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                
               >
                 <option value="">All Categories</option>
                 {CATEGORIES.map(c => <option key={c}>{c}</option>)}
@@ -448,7 +448,7 @@ export default function Expenses() {
               <select
                 value={filterBy} onChange={e => setFilterBy(e.target.value)}
                 className="border border-[#D5D2CA] bg-white text-[11px] text-[#0C0C0C] px-3 py-1.5 outline-none appearance-none hover:border-[#0C0C0C] transition-colors"
-                style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                
               >
                 <option value="">All Payers</option>
                 {PERSONS.map(p => <option key={p.key} value={p.key}>{p.name}</option>)}
@@ -457,7 +457,7 @@ export default function Expenses() {
                 <button
                   onClick={() => { setFilterCat(''); setFilterBy('') }}
                   className="text-[9px] uppercase tracking-wider text-[#B8321A] hover:underline"
-                  style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                  
                 >
                   Clear
                 </button>
@@ -467,20 +467,20 @@ export default function Expenses() {
             {/* Expense list */}
             <div>
               <p className="text-[9px] uppercase tracking-[1px] text-[#777] border-b border-[#D5D2CA] pb-2 mb-0"
-                 style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                 >
                 All Entries {filterCat || filterBy ? `(${displayed.length} shown)` : `(${expenses.length})`}
               </p>
 
               {loading && (
                 <p className="text-[10px] text-[#777] py-8 text-center"
-                   style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                   >
                   Loading…
                 </p>
               )}
 
               {!loading && !displayed.length && (
                 <p className="text-[11px] text-[#777] py-8 text-center"
-                   style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                   >
                   No expenses yet. Add one above.
                 </p>
               )}
@@ -500,23 +500,23 @@ export default function Expenses() {
                     {/* Info */}
                     <div className="flex-1 min-w-0">
                       <p className="text-[8px] uppercase tracking-[0.8px] mb-0.5"
-                         style={{ fontFamily: "'JetBrains Mono', monospace",
+                         style={{ 
                                   color: catStyle.text, background: catStyle.bg,
                                   display: 'inline-block', padding: '1px 5px' }}>
                         {e.category}
                       </p>
                       <p className="text-[14px] font-medium text-[#0C0C0C] leading-tight"
-                         style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                         >
                         {e.name}
                       </p>
                       {e.notes && (
                         <p className="text-[9.5px] text-[#777] mt-0.5"
-                           style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                           >
                           {e.notes}
                         </p>
                       )}
                       <p className="text-[9px] text-[#B8321A] mt-0.5"
-                         style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                         >
                         Paid by {cap(e.paid_by)} ·{' '}
                         {isPersonal
                           ? 'Personal expense'
@@ -526,19 +526,19 @@ export default function Expenses() {
 
                     {/* Date */}
                     <p className="text-[9px] text-[#BBBBBB] flex-shrink-0"
-                       style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                       >
                       {e.date ?? ''}
                     </p>
 
                     {/* Amount */}
-                    <p className="text-[18px] font-light text-[#0C0C0C] flex-shrink-0 min-w-[80px] text-right"
-                       style={{ fontFamily: "'Fraunces', serif" }}>
+                    <p className="type-num text-[18px] font-light flex-shrink-0 min-w-[80px] text-right leading-none tabular-nums"
+                       >
                       {fmt(e.amount)}
                     </p>
 
                     {/* Expand hint */}
                     <span className="text-[#BBBBBB] text-xs flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                          style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                          >
                       ⊕
                     </span>
 
@@ -563,8 +563,8 @@ export default function Expenses() {
 
             {/* Per-person balances */}
             <div className="border border-[#D5D2CA] bg-white p-5">
-              <p className="text-[8px] uppercase tracking-[1px] text-[#777] mb-4"
-                 style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              <p className="type-label mb-4"
+                 >
                 Balances
               </p>
               {PERSONS.map(({ key, name, accent }) => {
@@ -577,14 +577,13 @@ export default function Expenses() {
                     <div className="flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full" style={{ background: ac.dot }} />
                       <span className="text-[13px] font-medium text-[#0C0C0C]"
-                            style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                            >
                         {name}
                       </span>
                     </div>
                     <span
-                      className="text-[13px] font-semibold"
+                      className="type-num text-[13px] font-semibold tabular-nums"
                       style={{
-                        fontFamily: "'JetBrains Mono', monospace",
                         color: pos ? '#2e7d32' : neg ? '#B8321A' : '#777',
                       }}
                     >
@@ -597,26 +596,26 @@ export default function Expenses() {
 
             {/* Settlement */}
             <div className="border border-[#D5D2CA] bg-white p-5">
-              <p className="text-[8px] uppercase tracking-[1px] text-[#777] mb-4"
-                 style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              <p className="type-label mb-4"
+                 >
                 Who Pays Whom
               </p>
               {settlements.length === 0 ? (
-                <p className="text-[11px] text-[#777] text-center py-3"
-                   style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                <p className="type-meta text-center py-3"
+                   >
                   All settled ✓
                 </p>
               ) : (
                 settlements.map((s, i) => (
                   <div key={i} className="py-2.5 border-b border-[#D5D2CA] last:border-0">
                     <p className="text-[11px] text-[#0C0C0C]"
-                       style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                       >
                       <span className="text-[#B8321A] font-medium">{cap(s.from)}</span>
                       {' pays '}
                       <span className="text-[#2e7d32] font-medium">{cap(s.to)}</span>
                     </p>
-                    <p className="text-[20px] font-light text-[#0C0C0C] mt-0.5"
-                       style={{ fontFamily: "'Fraunces', serif" }}>
+                    <p className="type-num text-[20px] font-light mt-0.5 leading-none tabular-nums"
+                       >
                       {fmt(s.amount)}
                     </p>
                   </div>
@@ -626,8 +625,8 @@ export default function Expenses() {
 
             {/* Category breakdown */}
             <div className="border border-[#D5D2CA] bg-white p-5">
-              <p className="text-[8px] uppercase tracking-[1px] text-[#777] mb-4"
-                 style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              <p className="type-label mb-4"
+                 >
                 By Category
               </p>
               {CATEGORIES.map(cat => {
@@ -639,13 +638,13 @@ export default function Expenses() {
                 return (
                   <div key={cat} className="mb-3 last:mb-0">
                     <div className="flex justify-between mb-1">
-                      <span className="text-[9px] uppercase tracking-[0.5px]"
-                            style={{ fontFamily: "'JetBrains Mono', monospace",
+                      <span className="type-label"
+                            style={{ 
                                      color: cs.text }}>
                         {cat}
                       </span>
-                      <span className="text-[9px] text-[#777]"
-                            style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                      <span className="type-num text-[13px] text-[#0C0C0C] tabular-nums"
+                            >
                         {fmt(total)}
                       </span>
                     </div>
@@ -667,18 +666,18 @@ export default function Expenses() {
           <div className="bg-white border-[1.5px] border-[#0C0C0C] p-8 max-w-sm w-full mx-4"
                onClick={e => e.stopPropagation()}>
             <p className="text-[14px] text-[#0C0C0C] mb-6 leading-relaxed"
-               style={{ fontFamily: "'DM Sans', sans-serif" }}>
+               >
               Delete this expense? This can't be undone.
             </p>
             <div className="flex justify-end gap-3">
               <button onClick={() => setDelId(null)}
                       className="text-[10px] uppercase tracking-[0.8px] border-[1.5px] border-[#D5D2CA] text-[#777] px-5 py-2 hover:border-[#0C0C0C] hover:text-[#0C0C0C] transition-colors"
-                      style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                      >
                 Cancel
               </button>
               <button onClick={() => handleDelete(delId)}
                       className="text-[10px] uppercase tracking-[0.8px] bg-[#B8321A] text-white px-5 py-2 hover:opacity-85 transition-opacity"
-                      style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                      >
                 Delete
               </button>
             </div>

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../context/AuthContext'
 import { ACCENT_COLORS } from '../lib/users'
+import { OptimizedHeroImage } from '../components/OptimizedImage'
 
 // ── Constants ────────────────────────────────────────────────────────────────
 const PERSONS = [
@@ -132,14 +133,13 @@ export default function Savings() {
 
       {/* Hero */}
       <div className="relative h-[200px] lg:h-64 overflow-hidden flex items-end">
-        <div className="absolute inset-0 bg-cover bg-center"
-             style={{ backgroundImage: "url('https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=1400&q=70&auto=format&fit=crop')" }} />
+        <OptimizedHeroImage hero="savings" alt="" eager />
         <div className="absolute inset-0 bg-gradient-to-b from-black/15 to-black/70" />
         <div className="relative z-10 px-4 pb-5 lg:px-12 lg:pb-7 w-full">
           <p className="text-[9px] uppercase tracking-[1.8px] text-white/65 mb-1.5"
-             style={{ fontFamily: "'JetBrains Mono', monospace" }}>003B — SAVINGS</p>
+             >003B — SAVINGS</p>
           <h1 className="text-[32px] lg:text-[42px] font-bold text-white leading-none"
-              style={{ fontFamily: "'Fraunces', serif", letterSpacing: '-1px' }}>
+              style={{  letterSpacing: '-1px' }}>
             Savings <em className="not-italic" style={{ color: 'rgba(255,200,150,.95)' }}>Tracker</em>
           </h1>
         </div>
@@ -150,17 +150,17 @@ export default function Savings() {
         {/* Group total banner */}
         <div className="border border-[#D5D2CA] bg-white p-6 mb-7">
           <div className="flex items-end justify-between mb-1">
-            <p className="text-[9px] uppercase tracking-[1.2px] text-[#777]"
-               style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+            <p className="type-label"
+               >
               Combined · Target {fmt(TOTAL_GOAL)} · {fmt(MONTHLY_TARGET)}/month each
             </p>
-            <p className="text-[9px] text-[#777]"
-               style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+            <p className="type-num text-[12px] font-semibold text-[#0C0C0C] tabular-nums"
+               >
               {grandPct}%
             </p>
           </div>
-          <p className="text-[46px] font-light text-[#0C0C0C] leading-none"
-             style={{ fontFamily: "'Fraunces', serif" }}>
+          <p className="type-num text-[46px] font-light text-[#0C0C0C] leading-none tabular-nums"
+             >
             {fmt(grandTotal)}
           </p>
           <ProgressBar value={grandTotal} max={TOTAL_GOAL} />
@@ -172,8 +172,8 @@ export default function Savings() {
               return (
                 <div key={p.key} className="flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full" style={{ background: ac.dot }} />
-                  <span className="text-[9px] text-[#777]"
-                        style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                  <span className="type-meta"
+                        >
                     {p.name}: {fmt(tot)}
                   </span>
                 </div>
@@ -194,7 +194,7 @@ export default function Savings() {
                 onClick={() => setTab(key)}
                 className="px-5 py-2.5 text-[9.5px] uppercase tracking-[0.8px] transition-colors border-r border-[#D5D2CA] last:border-r-0"
                 style={{
-                  fontFamily: "'JetBrains Mono', monospace",
+                  
                   background: on ? '#0C0C0C' : 'transparent',
                   color:      on ? '#fff'    : '#777',
                 }}
@@ -208,7 +208,7 @@ export default function Savings() {
 
         {loading ? (
           <p className="text-[10px] text-[#777] py-12 text-center"
-             style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+             >
             Loading…
           </p>
         ) : tab === 'combined' ? (
@@ -230,18 +230,20 @@ export default function Savings() {
 function CombinedView({ data }) {
   return (
     <div>
-      <div className="grid grid-cols-3 lg:grid-cols-6 mb-6" style={{ gap: 1, background: '#D5D2CA', border: '1px solid #D5D2CA' }}>
+      {/* Monthly grid */}
+      <div className="grid mb-6"
+           style={{ gridTemplateColumns: 'repeat(6, 1fr)', gap: 1, background: '#D5D2CA', border: '1px solid #D5D2CA' }}>
         {MONTHS.map((m, i) => {
           const total = PERSONS.reduce((s, p) => s + (Number(data[p.key]?.[m]) || 0), 0)
           const mt    = MONTHLY_TARGET * 3
           const cls   = total === 0 ? '' : total >= mt ? '#2e7d32' : '#B8321A'
           return (
             <div key={m} className="bg-white p-3 pb-2.5">
-              <p className="text-[7.5px] uppercase tracking-[0.8px] text-[#777] mb-1.5"
-                 style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              <p className="type-label mb-1.5"
+                 >
                 {MONTH_LABELS[i]}
               </p>
-              <p className="text-[13px]" style={{ fontFamily: "'JetBrains Mono', monospace", color: cls || '#0C0C0C' }}>
+              <p className="type-num text-[13px] text-[#0C0C0C] tabular-nums" style={{  color: cls || '#0C0C0C' }}>
                 {total ? fmt(total) : '—'}
               </p>
               <div className="flex gap-px mt-1.5">
@@ -271,18 +273,18 @@ function CombinedView({ data }) {
             <div key={p.key}>
               <div className="flex items-center gap-2 mb-2">
                 <span className="w-2 h-2 rounded-full" style={{ background: ac.dot }} />
-                <p className="text-[9px] uppercase tracking-[0.8px] text-[#777]"
-                   style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                <p className="type-label"
+                   >
                   {p.name}
                 </p>
               </div>
-              <p className="text-[32px] font-light text-[#0C0C0C] leading-none"
-                 style={{ fontFamily: "'Fraunces', serif" }}>
+              <p className="type-num text-[32px] font-light text-[#0C0C0C] leading-none tabular-nums"
+                 >
                 {fmt(ptot)}
               </p>
               <ProgressBar value={ptot} max={PER_PERSON_GOAL} color={ac.dot} />
-              <p className="text-[8.5px] text-[#777]"
-                 style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              <p className="type-meta"
+                 >
                 {pct}% of {fmt(PER_PERSON_GOAL)}
               </p>
             </div>
@@ -310,19 +312,19 @@ function PersonView({ personKey, data, isMe, onSave }) {
         <div className="flex items-center gap-3 mb-1">
           <span className="w-3 h-3 rounded-full" style={{ background: ac.dot }} />
           <h2 className="text-[30px] font-semibold text-[#0C0C0C] leading-none"
-              style={{ fontFamily: "'Fraunces', serif" }}>
+              >
             {person.name}
           </h2>
           {isMe && (
-            <span className="text-[8px] uppercase tracking-[1px] px-2 py-0.5"
-                  style={{ fontFamily: "'JetBrains Mono', monospace",
+            <span className="type-label"
+                  style={{ 
                            background: ac.bg, color: ac.text }}>
               You
             </span>
           )}
         </div>
-        <p className="text-[9px] uppercase tracking-[0.8px] text-[#777]"
-           style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+        <p className="type-meta"
+           >
           Target: {fmt(PER_PERSON_GOAL)} · Monthly target: {fmt(MONTHLY_TARGET)}
         </p>
       </div>
@@ -336,8 +338,8 @@ function PersonView({ personKey, data, isMe, onSave }) {
           const below    = val > 0 && val <  MONTHLY_TARGET
           return (
             <div key={m} className="bg-white p-3 pb-2.5">
-              <p className="text-[7.5px] uppercase tracking-[0.8px] text-[#777] mb-1.5"
-                 style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              <p className="type-label mb-1.5"
+                 >
                 {MONTH_LABELS[i]}
               </p>
               {isMe ? (
@@ -347,18 +349,16 @@ function PersonView({ personKey, data, isMe, onSave }) {
                   defaultValue={val || ''}
                   placeholder="₹"
                   onBlur={e => onSave(personKey, m, e.target.value)}
-                  className="w-full border-0 border-b-2 bg-transparent text-[12px] outline-none pb-0.5 transition-colors"
+                  className="w-full border-0 border-b-2 bg-transparent text-[13px] text-[#0C0C0C] outline-none pb-0.5 transition-colors"
                   style={{
-                    fontFamily: "'JetBrains Mono', monospace",
                     borderColor: onTarget ? '#4caf50' : below ? '#B8321A' : '#D5D2CA',
                     color:       onTarget ? '#2e7d32' : below ? '#B8321A' : '#0C0C0C',
                   }}
                 />
               ) : (
                 <p
-                  className="text-[12px] pb-0.5 border-b-2 border-[#D5D2CA]"
+                  className="text-[13px] text-[#0C0C0C] pb-0.5 border-b-2 border-[#D5D2CA] tabular-nums"
                   style={{
-                    fontFamily: "'JetBrains Mono', monospace",
                     color: onTarget ? '#2e7d32' : below ? '#B8321A' : val ? '#0C0C0C' : '#BBBBBB',
                   }}
                 >
@@ -373,31 +373,31 @@ function PersonView({ personKey, data, isMe, onSave }) {
       {/* Summary row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 border-t-[1.5px] border-[#0C0C0C] pt-6">
         <div>
-          <p className="text-[8px] uppercase tracking-[1.2px] text-[#777] mb-2"
-             style={{ fontFamily: "'JetBrains Mono', monospace" }}>Total Saved</p>
-          <p className="text-[38px] font-light text-[#0C0C0C] leading-none"
-             style={{ fontFamily: "'Fraunces', serif" }}>{fmt(total)}</p>
+          <p className="type-label mb-2"
+             >Total Saved</p>
+          <p className="type-num text-[32px] font-light text-[#0C0C0C] leading-none tabular-nums"
+             >{fmt(total)}</p>
           <ProgressBar value={total} max={PER_PERSON_GOAL} color={ac.dot} />
-          <p className="text-[8.5px] text-[#777]"
-             style={{ fontFamily: "'JetBrains Mono', monospace" }}>{pct}% complete</p>
+          <p className="type-meta"
+             >{pct}% complete</p>
         </div>
         <div>
-          <p className="text-[8px] uppercase tracking-[1.2px] text-[#777] mb-2"
-             style={{ fontFamily: "'JetBrains Mono', monospace" }}>Remaining</p>
-          <p className="text-[38px] font-light text-[#0C0C0C] leading-none"
-             style={{ fontFamily: "'Fraunces', serif" }}>{fmt(remaining)}</p>
-          <p className="text-[8.5px] text-[#777] mt-2"
-             style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+          <p className="type-label mb-2"
+             >Remaining</p>
+          <p className="type-num text-[32px] font-light text-[#0C0C0C] leading-none tabular-nums"
+             >{fmt(remaining)}</p>
+          <p className="type-meta mt-2"
+             >
             {MONTHS.length - contributed} months left
           </p>
         </div>
         <div>
-          <p className="text-[8px] uppercase tracking-[1.2px] text-[#777] mb-2"
-             style={{ fontFamily: "'JetBrains Mono', monospace" }}>Avg / Month</p>
-          <p className="text-[38px] font-light text-[#0C0C0C] leading-none"
-             style={{ fontFamily: "'Fraunces', serif" }}>{avg ? fmt(avg) : '—'}</p>
-          <p className="text-[8.5px] text-[#777] mt-2"
-             style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+          <p className="type-label mb-2"
+             >Avg / Month</p>
+          <p className="type-num text-[32px] font-light text-[#0C0C0C] leading-none tabular-nums"
+             >{avg ? fmt(avg) : '—'}</p>
+          <p className="type-meta mt-2"
+             >
             {contributed} month{contributed !== 1 ? 's' : ''} contributed
           </p>
         </div>
@@ -405,7 +405,7 @@ function PersonView({ personKey, data, isMe, onSave }) {
 
       {!isMe && (
         <p className="text-[9px] text-[#BBBBBB] mt-6 text-center"
-           style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+           >
           Read-only — you can only edit your own savings
         </p>
       )}

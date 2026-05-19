@@ -1,184 +1,175 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
+:root {
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-ui: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --color-paper: #F5F4F0;
+  --color-surface: #FFFEFB;
+  --color-ink: #0C0C0C;
+  --color-muted: #777;
+  --color-faint: #BBBBBB;
+  --color-border: #D5D2CA;
+  --color-divider: #E8E5DE;
+  --color-line: #E5E2DA;
+  --color-accent: #B8321A;
+  --shadow-glass: 0 18px 45px rgba(12, 12, 12, 0.12);
+  --tracking-label: 0.07em;
+  --tracking-tight: 0.01em;
+  --leading-body: 1.65;
+  --type-hero: clamp(2.4rem, 2.05rem + 1.55vw, 4rem);
+  --type-title: clamp(1.55rem, 1.35rem + 0.7vw, 2.25rem);
+  --type-stat: clamp(1.45rem, 1.25rem + 0.9vw, 2.35rem);
 }
 
-.hero {
-  position: relative;
-
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
-
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
-  }
+html, body, #root {
+  height: 100%;
 }
 
-#center {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
+html {
+  -webkit-text-size-adjust: 100%;
 }
 
-#next-steps {
-  display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
-
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
+body {
+  font-family: var(--font-ui);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+  overflow-x: hidden;
 }
 
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
+h1 {
+  letter-spacing: 0.01em;
 }
 
-#next-steps ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
-
-  .logo {
-    height: 18px;
-  }
-
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  }
+h2, h3 {
+  font-family: var(--font-ui);
+  letter-spacing: 0;
 }
 
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
+button, a, select, input, textarea {
+  font-family: var(--font-ui);
+  touch-action: manipulation;
 }
 
-.ticks {
-  position: relative;
-  width: 100%;
-
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
-  }
-
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
-  }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
-  }
+nav a, nav button {
+  min-height: 44px;
 }
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* enforce Inter on all tiny text utilities */
+.text-\[7px\], .text-\[7\.5px\], .text-\[8px\], .text-\[8\.5px\],
+.text-\[9px\], .text-\[9\.5px\], .text-\[10px\],
+.text-\[10\.5px\], .text-\[11px\] {
+  font-family: var(--font-ui);
+}
+
+/* ── Global typography system ─────────────────────────────────────────
+   Tier 1 — Inter     : sidebar nav, body text, buttons, inputs, meta
+   Tier 2 — Fraunces  : page titles (h1), numbers, countdown, hero text
+   Tier 3 — JetBrains Mono : tiny uppercase labels / kicker text
+   ──────────────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  font-family: inherit;
+}
+
+body {
+  font-family: var(--font-ui);
+}
+
+/* ── Tier 1 — Inter for UI shell & body ── */
+.app-sidebar,
+.app-main,
+.page-shell,
+.page-content,
+.page-hero,
+.panel,
+.panel-strong,
+.soft-card,
+.type-body,
+.type-button,
+.sb-lbl,
+.sb-brand-name,
+.sb-brand-meta,
+.sidebar-nav-item,
+.sidebar-brand-title,
+.sidebar-brand-mark,
+.app-sidebar-meta,
+.field-input,
+.field-label {
+  font-family: var(--font-ui) !important;
+}
+
+/* ── Tier 2 — Fraunces for display/numbers/headings ── */
+.type-num,
+.type-stat,
+.cd-big {
+  font-family: var(--font-display) !important;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* page titles (h1 on every page) and section headings */
+.app-main h1,
+.app-main h2,
+.type-title,
+.type-hero-title {
+  font-family: var(--font-display) !important;
+}
+
+/* welcome strip greeting */
+.dashboard-welcome-strip p,
+.dashboard-welcome-strip span {
+  font-family: var(--font-display) !important;
+}
+
+/* ── Tier 3 — JetBrains Mono for tiny labels/kickers ── */
+.type-label,
+.type-kicker {
+  font-family: var(--font-mono) !important;
+  letter-spacing: 0.06em;
+}
+
+.app-sidebar .sidebar-nav-item {
+  font-size: 12.5px !important;
+  line-height: 1.45;
+  font-weight: 500 !important;
+  letter-spacing: 0.1px;
+}
+
+.sb-lbl {
+  font-size: 12.5px;
+  line-height: 1.45;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+}
+
+.sb-brand-name {
+  font-size: 17px;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.sb-brand-meta {
+  font-size: 8.5px;
+  line-height: 1.35;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+}
+
+.dashboard-welcome-strip {
+  min-height: 34px;
+}
+
+

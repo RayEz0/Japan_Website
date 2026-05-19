@@ -55,7 +55,7 @@ function AppLayout() {
   function handleToggleCollapse() {
     setSidebarCollapsed(prev => {
       const next = !prev
-      try { localStorage.setItem(LS_COLLAPSED, String(next)) } catch {}
+      try { localStorage.setItem(LS_COLLAPSED, String(next)) } catch { /* localStorage may be unavailable */ }
       return next
     })
   }
@@ -64,7 +64,7 @@ function AppLayout() {
     return (
       <div className="min-h-screen bg-[#F5F4F0] flex items-center justify-center">
         <div className="text-[10px] uppercase tracking-widest text-[#777]"
-             style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+             >
           Loading…
         </div>
       </div>
@@ -83,7 +83,7 @@ function AppLayout() {
       />
 
       {/* Mobile top bar */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 h-12 bg-white border-b border-[#D5D2CA] flex items-center px-3 z-40">
+      <div className="mobile-topbar lg:hidden fixed top-0 left-0 right-0 h-12 bg-white border-b border-[#D5D2CA] flex items-center px-3 z-40">
         <button
           onClick={() => setSidebarOpen(true)}
           className="w-10 h-10 flex items-center justify-center text-[#0C0C0C]"
@@ -94,7 +94,7 @@ function AppLayout() {
           </svg>
         </button>
         <p className="flex-1 text-center text-[14px] font-semibold text-[#0C0C0C]"
-           style={{ fontFamily: "'Fraunces', serif" }}>
+           >
           {pageTitle}
         </p>
         <div className="w-10" />
@@ -102,7 +102,7 @@ function AppLayout() {
 
       {/* Main content — margin animates with sidebar on desktop */}
       <main
-        className={`flex-1 min-w-0 overflow-y-auto h-screen pt-12 lg:pt-0 ${sidebarCollapsed ? 'lg:ml-0' : 'lg:ml-[260px]'}`}
+        className={`app-main flex-1 min-w-0 overflow-y-auto h-screen pt-12 lg:pt-0 ${sidebarCollapsed ? 'lg:ml-0' : 'lg:ml-[260px]'}`}
         style={{ transition: 'margin-left 0.2s cubic-bezier(0.4, 0, 0.2, 1)' }}
       >
         <AnimatedOutlet />

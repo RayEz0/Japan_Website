@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../context/AuthContext'
 import { DAYS, toPlaceKey } from '../data/days'
+import { LazyCarouselImage, OptimizedHeroImage } from '../components/OptimizedImage'
 
 // ── Image focal-point map ─────────────────────────────────────────────────────
 const POSITION_MAP = {
@@ -49,21 +50,7 @@ function Carousel({ images, alt, objectPosition = 'center center' }) {
 
   return (
     <div className="relative h-[200px] overflow-hidden bg-[#EFEDE7] flex-shrink-0">
-      {validImgs.map((src, i) => (
-        <div
-          key={i}
-          className="absolute inset-0 transition-opacity duration-500"
-          style={{ opacity: i === cur ? 1 : 0, pointerEvents: i === cur ? 'auto' : 'none' }}
-        >
-          <img
-            src={src}
-            alt={alt}
-            className="w-full h-full object-cover block"
-            style={{ objectPosition }}
-            loading="lazy"
-          />
-        </div>
-      ))}
+      <LazyCarouselImage src={validImgs[cur]} alt={alt} objectPosition={objectPosition} />
 
       {validImgs.length > 1 && (
         <>
@@ -121,7 +108,7 @@ function PlaceCard({ dayNum, place, visitedMap, onToggleVisit, onSaveNote }) {
         {/* Name + visited badge */}
         <div className="flex items-start gap-2 mb-1">
           <h3 className="text-base font-bold text-[#0C0C0C] leading-tight flex-1"
-              style={{ fontFamily: "'DM Sans', sans-serif" }}>
+              >
             {place.n}
             {isVisited && <span className="ml-1.5 text-sm">✅</span>}
           </h3>
@@ -129,13 +116,13 @@ function PlaceCard({ dayNum, place, visitedMap, onToggleVisit, onSaveNote }) {
 
         {/* Time */}
         <p className="text-[10px] text-[#777] mb-2.5"
-           style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+           >
           ⏰ {place.s}
         </p>
 
         {/* Description */}
         <p className="text-[15px] text-[#3A3A3A] leading-[1.75] mb-3"
-           style={{ fontFamily: "'DM Sans', sans-serif" }}>
+           >
           {place.d}
         </p>
 
@@ -145,7 +132,7 @@ function PlaceCard({ dayNum, place, visitedMap, onToggleVisit, onSaveNote }) {
             onClick={() => onToggleVisit(key, !isVisited)}
             className="text-[8.5px] uppercase tracking-[0.6px] px-2.5 py-1.5 border transition-all duration-150"
             style={{
-              fontFamily: "'JetBrains Mono', monospace",
+              
               borderColor: isVisited ? '#4caf50' : '#D5D2CA',
               background:  isVisited ? '#e8f5e9' : 'transparent',
               color:       isVisited ? '#2e7d32' : '#777',
@@ -159,7 +146,7 @@ function PlaceCard({ dayNum, place, visitedMap, onToggleVisit, onSaveNote }) {
             target="_blank"
             rel="noopener noreferrer"
             className="text-[8.5px] uppercase tracking-[0.6px] px-2.5 py-1.5 border border-[#D5D2CA] text-[#777] hover:border-[#0C0C0C] hover:text-[#0C0C0C] transition-all duration-150 flex items-center gap-1"
-            style={{ fontFamily: "'JetBrains Mono', monospace" }}
+            
           >
             📍 Maps
           </a>
@@ -173,7 +160,7 @@ function PlaceCard({ dayNum, place, visitedMap, onToggleVisit, onSaveNote }) {
           placeholder="Add a note…"
           rows={2}
           className="mt-3 w-full text-[10px] text-[#0C0C0C] bg-transparent border-0 border-b border-[#D5D2CA] outline-none resize-none placeholder-[#BBBBBB] focus:border-[#0C0C0C] transition-colors"
-          style={{ fontFamily: "'JetBrains Mono', monospace" }}
+          
         />
       </div>
     </div>
@@ -186,22 +173,22 @@ function OptionalRow({ place }) {
     <div className="flex items-start gap-2.5 px-3.5 py-2 border-l-2 border-[#D5D2CA] opacity-55">
       <span
         className="text-[7.5px] uppercase tracking-[1.5px] text-[#B8321A] bg-[#F5F4F0] border border-[#D5D2CA] px-1 py-px whitespace-nowrap flex-shrink-0 mt-0.5"
-        style={{ fontFamily: "'JetBrains Mono', monospace" }}
+        
       >
         Optional
       </span>
       <div>
         <p className="text-[13px] font-medium text-[#3A3A3A]"
-           style={{ fontFamily: "'DM Sans', sans-serif" }}>
+           >
           {place.n}
         </p>
         <p className="text-[9px] text-[#777] mt-0.5"
-           style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+           >
           ⏰ {place.s}
         </p>
         {place.d && (
           <p className="text-[12px] text-[#777] mt-1 leading-relaxed"
-             style={{ fontFamily: "'DM Sans', sans-serif" }}>
+             >
             {place.d.slice(0, 80)}…
           </p>
         )}
@@ -227,23 +214,23 @@ function DayAccordion({ day, dayIndex, visitedMap, onToggleVisit, onSaveNote }) 
         style={{ borderBottom: open ? '1px solid #0C0C0C' : 'none' }}
       >
         <span
-          className="text-[28px] lg:text-[42px] font-light text-[#BBBBBB] w-[38px] lg:w-[52px] flex-shrink-0 leading-none"
-          style={{ fontFamily: "'Fraunces', serif" }}
+          className="type-num w-[38px] lg:w-[52px] flex-shrink-0 leading-none text-[2.5rem] lg:text-[3rem] text-[#0C0C0C] tabular-nums"
+          style={{ fontSize: 'clamp(1.75rem, 4vw, 3rem)' }}
         >
           {day.num}
         </span>
 
         <div className="flex-1 min-w-0">
           <p className="text-[8px] uppercase tracking-[1.5px] text-[#B8321A] mb-0.5"
-             style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+             >
             {day.city}
           </p>
           <p className="text-[18px] lg:text-[22px] font-semibold text-[#0C0C0C] leading-tight"
-             style={{ fontFamily: "'Fraunces', serif" }}>
+             >
             {day.title}
           </p>
           <p className="text-[9px] text-[#777] mt-1"
-             style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+             >
             🚃 {day.transport}
           </p>
         </div>
@@ -252,7 +239,7 @@ function DayAccordion({ day, dayIndex, visitedMap, onToggleVisit, onSaveNote }) 
         {visitedPlaces > 0 && (
           <span
             className="text-[8px] px-2 py-1 bg-[#e8f5e9] text-[#2e7d32] border border-[#4caf50] whitespace-nowrap"
-            style={{ fontFamily: "'JetBrains Mono', monospace" }}
+            
           >
             {visitedPlaces}/{totalPlaces} visited
           </span>
@@ -260,7 +247,7 @@ function DayAccordion({ day, dayIndex, visitedMap, onToggleVisit, onSaveNote }) 
 
         <span
           className="text-[#777] text-lg flex-shrink-0 transition-transform duration-200"
-          style={{ transform: open ? 'rotate(90deg)' : 'none', fontFamily: "'JetBrains Mono', monospace" }}
+          style={{ transform: open ? 'rotate(90deg)' : 'none', }}
         >
           ›
         </span>
@@ -308,11 +295,11 @@ function DayAccordion({ day, dayIndex, visitedMap, onToggleVisit, onSaveNote }) 
             ].map(({ label, value }) => (
               <div key={label}>
                 <p className="text-[8.5px] uppercase tracking-[1px] text-[#B8321A] mb-1 font-medium"
-                   style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                   >
                   {label}
                 </p>
                 <p className="text-[15px] text-[#3A3A3A] leading-[1.75]"
-                   style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                   >
                   {value}
                 </p>
               </div>
@@ -380,18 +367,15 @@ export default function Itinerary() {
 
       {/* Hero */}
       <div className="relative h-[200px] lg:h-64 overflow-hidden flex items-end">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=1400&q=70&auto=format&fit=crop')" }}
-        />
+        <OptimizedHeroImage hero="itinerary" alt="" eager />
         <div className="absolute inset-0 bg-gradient-to-b from-black/15 to-black/70" />
         <div className="relative z-10 px-4 pb-5 lg:px-12 lg:pb-7 w-full">
           <p className="text-[9px] uppercase tracking-[1.8px] text-white/65 mb-1.5"
-             style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+             >
             002 — ROUTE
           </p>
           <h1 className="text-[32px] lg:text-[42px] font-bold text-white leading-none"
-              style={{ fontFamily: "'Fraunces', serif", letterSpacing: '-1px' }}>
+              style={{  letterSpacing: '-1px' }}>
             Itinerary <em className="not-italic" style={{ color: 'rgba(255,200,150,0.95)' }}>2027</em>
           </h1>
         </div>
@@ -401,7 +385,7 @@ export default function Itinerary() {
       {loading && (
         <div className="flex items-center justify-center py-20">
           <p className="text-[10px] uppercase tracking-widest text-[#777]"
-             style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+             >
             Loading…
           </p>
         </div>
